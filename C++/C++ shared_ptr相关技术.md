@@ -111,7 +111,7 @@ int main() {
 `weak_ptr` 不会增加引用计数，因此可以打破 shared_ptr 的循环引用。通常在继承关系中的做法是父类持有子类的 shared_ptr，子类持有指向父类的 weak_ptr。
 
 参考：  
-《Linux多线程服务端编程》陈硕
-https://stackoverflow.com/questions/18301511
-https://stackoverflow.com/questions/712279
-https://zh.cppreference.com/w/cpp/memory/shared_ptr/make_shared
+《Linux多线程服务端编程》陈硕  
+https://stackoverflow.com/questions/18301511  
+https://stackoverflow.com/questions/712279  
+https://zh.cppreference.com/w/cpp/memory/shared_ptr/make_shared  
