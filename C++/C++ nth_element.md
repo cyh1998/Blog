@@ -1,5 +1,5 @@
 ## 前 言
-之前刷Leetcode题：[最接近原点的 K 个点](https://leetcode-cn.com/problems/k-closest-points-to-origin/)，本题直接用`sort()`排序会超时，看到大佬使用了一个叫 `nth_element()` 的函数，因此本文介绍STL中 `nth_element()` 的使用。
+之前刷Leetcode题：[最接近原点的 K 个点](https://leetcode-cn.com/problems/k-closest-points-to-origin/)，本题直接用 `sort()` 排序会超时，看到大佬使用了一个叫 `nth_element()` 的函数，因此本文介绍STL中 `nth_element()` 的使用。
 
 ## nth_element
 首先看下函数原型：
