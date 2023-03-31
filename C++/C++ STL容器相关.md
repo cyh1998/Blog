@@ -4,7 +4,7 @@
 vector<pair<key,value>> vec(map.begin(), map.end());
 ```
 ## 二、map根据value排序
-首先map是根据key来排序的，理论上我们无法将map根据value来排序，但是我们可以先将map转为vector，然后利用`sort()`来排序
+首先map是根据key来排序的，理论上我们无法将map根据value来排序，但是我们可以先将map转为vector，然后利用 `sort()` 来排序
 ```
 #include <vector>
 #include <algorithm>
@@ -114,4 +114,4 @@ m.erase(m.begin(), m.end()); //清空map
 ```
 ## 七、map和set的区别
 map的set底层都是用红黑树实现，都不允许键重复。   
-区别：map以键值对的形式存储，set只有值，且值就是键。map可以修改某个key的value，set不可修改
+区别：map以键值对的形式存储，set只有值，且值就是键。map可以修改某个key的value，set不可修改。
