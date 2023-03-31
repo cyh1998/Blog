@@ -73,5 +73,5 @@ template <class ForwardIterator, class T>
   ForwardIterator upper_bound (ForwardIterator first, ForwardIterator last,
                                const T& val);
 ```
-`upper_bound` 用于在 `[first, last)` 范围内使用**二分查找**，返回大于`val`的迭代器。支持自定义规则函数，作为第四个参数。  
+`upper_bound` 用于在 `[first, last)` 范围内使用**二分查找**，返回大于 `val` 的迭代器。支持自定义规则函数，作为第四个参数。  
 原理与 `lower_bound` 相似，这里不再赘述。
