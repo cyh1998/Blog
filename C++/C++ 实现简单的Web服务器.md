@@ -1,5 +1,7 @@
+## 概 述
 简单的web服务器就是通过TCP三次握手建立连接后，服务器返回一个HTTP响应给浏览器。浏览器再通过URL去请求服务器的连接，并且通过URL中的路径请求服务器上的资源。
 
+## 实 现
 涉及的知识点：  
 **1. `sockaddr_in` 结构体**  
 `struct sockaddr_in` 用于处理网络通信中的地址，在头文件 `<netinet/in.h>` 中定义
@@ -24,7 +26,7 @@ struct sockaddr{
     char         sa_data[14]; //地址信息
 }
 ```
-**2. `memset()`方法**  
+**2. `memset()` 方法**  
 `memset()` 用于将一段内存空间全部设置为某个字符，在socket中常用于将结构体初始化。在头文件 `<string.h>` 中定义。
 ```
 struct sockaddr_in sever_add;
@@ -32,13 +34,13 @@ struct sockaddr_in sever_add;
 //原型 void *memset(void *str, int c, size_t n)
 memset(&sever_add,0,sizeof(sever_add)); //将sever_add初始化为0
 ```
-**3. `assert()`方法**  
+**3. `assert()` 方法**  
 `assert()` 在头文件 `<assert.h>` 中定义，其作用是如果它的条件返回错误，则终止程序执行。在Debug模式下可以方便调试，便于定位程序错误的位置。在调试结束后，可以通过在包含 `#include <assert.h>` 的语句之前插入 `#define NDEBUG` 来禁用 `assert` 调用，示例代码如下：
 ```
 #define NDEBUG
 #include <assert.h>
 ```
-**4. `sendfile()`方法**  
+**4. `sendfile()` 方法**  
 `sendfile()` 在头文件 `<sys/sendfile.h>` 中定义，其原型为：
 ```
 //in_fd：待读出内容的文件描述符
