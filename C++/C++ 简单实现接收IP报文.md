@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
 
 **3. `in_addr` 结构体和 `inet_ntoa()` 函数**  
 结构体 `in_addr` 用来表示一个32位的IPv4地址。  
-函数 `inet_ntoa()` 用来将网络地址转换成`.`点隔的字符串格式  
+函数 `inet_ntoa()` 用来将网络地址转换成 `.` 点隔的字符串格式  
 头文件为 `<arpa/inet.h>`  
 
 实现结果：  
