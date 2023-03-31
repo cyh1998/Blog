@@ -31,6 +31,7 @@ struct Student
 文中提到，在C++14之前，默认成员初始化器阻止类成为聚合，因此导致无法通过 `{}` 来聚合初始化  
 显然vs2019支持了C++14，而GCC 5才对C++14这一新规则支持  
 通过cppreference官网也证实了这一点  
+
 ![C++14 core language features](https://upload-images.jianshu.io/upload_images/22192996-706a044894fdb65c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 最后，查看一下服务器上GCC的版本为4.8，因此并不支持这一新特性
