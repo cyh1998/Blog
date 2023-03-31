@@ -1,5 +1,5 @@
-#### C++ 平衡二叉树 实现插入、删除、查找、遍历(中序)的功能
-#### 树结点类、平衡二叉树类
+## C++ 平衡二叉树 
+### 树结点类、平衡二叉树类
 ```
 template <typename KeyType>
 class AVLNode{
@@ -40,7 +40,7 @@ class AVLTree{
         bool delnode(const KeyType key);//删除外部接口
 };
 ```
-#### 插入操作
+### 插入操作
 思路很简单，小于当前结点的值，往左走；大于当前结点的值，往右走。每次插入后需要进行平衡操作，保证树的平衡
 ```
 //插入内部实现
@@ -69,7 +69,7 @@ bool AVLTree<KeyType>::insert(const KeyType key){
     return __insert(avlroot,key) == nullptr ? false : true;
 }
 ```
-#### 平衡操作
+### 平衡操作
 ```
 //求树的高度
 template <typename KeyType>
@@ -103,7 +103,7 @@ AVLNode<KeyType> *AVLTree<KeyType>::__balance(Node *root){
     return root;
 }
 ```
-#### 旋转操作
+### 旋转操作
 平衡二叉树的核心部分就是旋转操作，为了保证二叉树的平衡，在每一次插入和删除结点时都需要判断当前结点是否平衡，如何不平衡就需要进行旋转操作，根据二叉树的实际情况可分为4种：单旋转(左左、右右)，双旋转(左右、右左)。百度有很多详细的讲解，这里不在赘述，代码如下：
 ```
 //四种旋转
@@ -132,7 +132,7 @@ AVLNode<KeyType> *AVLTree<KeyType>::__rotation_rl(Node *root){
     return __rotation_rr(root);
 }
 ```
-#### 删除结点
+### 删除结点
 删除结点时，需要分情况讨论，且在删除结点后记得平衡操作
 ```
 //删除结点内部实现
@@ -174,7 +174,7 @@ bool AVLTree<KeyType>::delnode(const KeyType key){
     return __delnode(avlroot,key) == nullptr ? false : true;
 }
 ```
-#### 整体实现代码以及测试
+### 整体实现代码以及测试
 ```
 #include <iostream>
 #include <algorithm>

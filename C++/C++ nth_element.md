@@ -1,14 +1,14 @@
-#### 前 言
-之前刷Leetcode题：[最接近原点的 K 个点](https://leetcode-cn.com/problems/k-closest-points-to-origin/)，本题直接用`sort()`排序会超时，看到大佬使用了一个叫`nth_element()`的函数，因此本文介绍STL中`nth_element()`的使用。
+## 前 言
+之前刷Leetcode题：[最接近原点的 K 个点](https://leetcode-cn.com/problems/k-closest-points-to-origin/)，本题直接用`sort()`排序会超时，看到大佬使用了一个叫 `nth_element()` 的函数，因此本文介绍STL中 `nth_element()` 的使用。
 
-#### nth_element
+## nth_element
 首先看下函数原型：
 ```
 template <class RandomAccessIterator>
 void nth_element (RandomAccessIterator first, RandomAccessIterator nth,
                     RandomAccessIterator last);
 ```
-函数说明：
+函数说明：  
 重新排列range[first,last)中的元素，使第nth个位置的元素是按排序顺序在该位置的元素。其他元素没有任何特定的顺序，只是第nth个元素之前的元素都不大于该元素，而第nth个元素后面的元素均小于该元素。
 这个很好理解，举个例子
 ```
@@ -18,9 +18,9 @@ void nth_element (RandomAccessIterator first, RandomAccessIterator nth,
 //nth_element nth = 5
 [x, x, x, x, x, 5, x, x, x, x]
 ```
-`nth_element()`将会使得第nth个位置的元素是按排序顺序在该位置的元素，即为5，其他元素没有任何特定的顺序，但保证5之前的元素均比5小，5之后的元素均比5大。(类似于快速排序的原理)
+`nth_element()` 将会使得第nth个位置的元素是按排序顺序在该位置的元素，即为5，其他元素没有任何特定的顺序，但保证5之前的元素均比5小，5之后的元素均比5大。(类似于快速排序的原理)
 
-当然，我们可以自定义判断函数，作为`nth_element()`的第四个参数
+当然，我们可以自定义判断函数，作为 `nth_element()` 的第四个参数
 ```
 template <class RandomAccessIterator, class Compare>
 void nth_element (RandomAccessIterator first, RandomAccessIterator nth,
@@ -84,8 +84,8 @@ public:
 ```
 也可以学习下其他的解法。
 
-#### 进一步讨论
-本人在VS 2019(MSVC 2017 编译器)下实测，发现了一个问题
+## 进一步讨论
+本人在VS 2019(MSVC 2017 编译器)下实测，发现了一个问题  
 测试代码：
 ```
 int main()
@@ -109,8 +109,8 @@ int main()
 
 ![结果](https://upload-images.jianshu.io/upload_images/22192996-b97cc6874cb6194d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-奇怪的事情发生了，为什么`nth_element()`把整个数组都排列了？
-查看了下源码，发现了其中的原因：
+奇怪的事情发生了，为什么 `nth_element()` 把整个数组都排列了？  
+查看了下源码，发现了其中的原因：  
 ```
 // FUNCTION TEMPLATE nth_element
 template <class _RanIt, class _Pr>
@@ -140,11 +140,11 @@ _CONSTEXPR20 void nth_element(_RanIt _First, _RanIt _Nth, _RanIt _Last, _Pr _Pre
     _Insertion_sort_unchecked(_UFirst, _ULast, _Pass_fn(_Pred)); // sort any remainder
 }
 ```
-源码中的`_ISORT_MAX`为32，所以，在VS环境下，当数组长度小于32时，`nth_element()`会将数组全排序。数组超过32长度时，才会排序第nth位数字。
-使用超过32长度的数组，再试一次，代码都不展示了
+源码中的 `_ISORT_MAX` 为32，所以，在VS环境下，当数组长度小于32时，`nth_element()` 会将数组全排序。数组超过32长度时，才会排序第nth位数字。  
+使用超过32长度的数组，再试一次，代码都不展示了  
 
 ![结果](https://upload-images.jianshu.io/upload_images/22192996-2968be5f2a3a5542.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 得到了预期的结果。
 
-更多我的Leetcode题解，详见[Leetcode题解](https://github.com/cyh1998/algorithm)
+更多我的Leetcode题解，详见 [Leetcode题解](https://github.com/cyh1998/algorithm)

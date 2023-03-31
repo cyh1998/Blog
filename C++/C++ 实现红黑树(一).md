@@ -1,5 +1,5 @@
-#### 红黑树的简单介绍
-红黑树(Red-Black Tree，简称R-B Tree)，它一种特殊的二叉查找树。这意味着它满足二叉查找树的特征，但是也有许多自己的特性。  
+## 红黑树的简单介绍
+红黑树(Red-Black Tree，简称R-B Tree)，它一种特殊的二叉查找树。这意味着它满足二叉查找树的特征，但是也有许多自己的特性。    
 红黑树的特性：  
 - 每个节点的颜色非黑及红。
 - 根节点是黑色。
@@ -8,8 +8,9 @@
 - 从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑色节点。
 
 这里推荐一个数据结构可视化的网站，可以查看多种数据结构：[数据结构可视化](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)
-#### 实现
-#### 结点和树的定义
+
+## 实现
+### 结点和树的定义
 ```
 enum RBTColor{Red,Black};
 
@@ -50,7 +51,7 @@ class RBTree{
         void traversal(); //遍历(中序)外部接口
 };
 ```
-#### 左旋和右旋
+### 左旋和右旋
 详细的注释和代码：
 ```
 /*
@@ -104,7 +105,7 @@ void RBTree<keytype>::right_rotate(Node *&root,Node *y){
     y->parent = x; //将x设为y的父结点
 }
 ```
-#### 插入
+### 插入
 
 1. 将红黑树当作二叉查找树，插入结点
 2. 将结点着色为红色
@@ -131,8 +132,8 @@ void RBTree<keytype>::__insert(Node *&root,const keytype key){
     in_correct(root,node); //修正红黑树
 }
 ```
-这里将第三步细化为修正操作，如下
-#### 插入修正
+这里将第三步细化为修正操作，如下  
+**插入修正**  
 根据插入结点的情况，分为三种情况处理  
 1. 插入的结点是根结点：将此结点着色为黑色
 2. 插入结点的父结点是黑色的：不做操作
@@ -203,7 +204,7 @@ void RBTree<keytype>::in_correct(Node *&root,Node *node){
     root->color = Black;
 }
 ```
-#### 遍历(中序)
+### 遍历(中序)
 ```
 //遍历(中序)内部接口
 template <typename keytype>
@@ -220,7 +221,7 @@ void RBTree<keytype>::traversal(){
     __traversal(RBTRoot);
 }
 ```
-#### 测试
+### 测试
 ```
 int main(){
     RBTree<int> tree;

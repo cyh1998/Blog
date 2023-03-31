@@ -1,12 +1,12 @@
-#### 实现用C++读取.csv文件，并存到STL中
+## 实现用C++读取.csv文件，并存到STL中
 .csv文件即将表格数据转换为用分隔字符分隔的值(也可以不是逗号)
-#### 头文件：
+### 头文件：
 ```
 #include <fstream>
 #include <string>
 #include <sstream>
 ```
-#### 简单的demo
+### 简单的demo
 ```
 int main(){
     vector<vector<int>> user_arr;
@@ -29,9 +29,7 @@ int main(){
 ```
 补充：
 将字符串类型数据转换成 `int` 类型需要先使用 `.c_str()` 转成 `const char*` 类型，再用 `atoi()` 转成 `int` ，如果转为浮点型则 `atof()` ，`long` 型则 `atol()` 等等。
-#### 结果：
+### 结果  
 ![.csv文件](https://upload-images.jianshu.io/upload_images/22192996-d0064e2bc504fdf7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ![输出结果](https://upload-images.jianshu.io/upload_images/22192996-4b0d79d5588742d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-

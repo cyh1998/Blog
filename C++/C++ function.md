@@ -1,8 +1,8 @@
-#### 前言
-在之前的文章[C++ std::bind](https://www.jianshu.com/p/82407fb43475)中，我们使用`bind()`来创建可调用对象，示例代码中均使用了`auto`自动类型来接受`bind()`的返回值，而这个返回值则是`std::function`类型。
-C++中有多种可调用对象：函数、函数指针、`lambda`表达式、`bind()`创建的对象、重载了函数调用运算符的类(仿函数)。我们可以使用`std::function`将不同类型的可调用对象共享同一种**调用形式**。
+## 前言
+在之前的文章 [C++ std::bind](./C++%20bind.md) 中，我们使用 `bind()` 来创建可调用对象，示例代码中均使用了 `auto` 自动类型来接受 `bind()` 的返回值，而这个返回值则是 `std::function` 类型。  
+C++中有多种可调用对象：函数、函数指针、`lambda` 表达式、`bind()` 创建的对象、重载了函数调用运算符的类(仿函数)。我们可以使用 `std::function` 将不同类型的可调用对象共享同一种**调用形式**。
 
-#### 函数使用
+## 函数使用
 ```
 #include <iostream>
 #include <functional> //function bind
@@ -62,8 +62,8 @@ int main()
 ```
 上文所示的代码，将不同类型的可调用对象，都通过`std::function`变成了具有相同的调用形式
 
-#### 进一步讨论
-在文章[C++/Qt 实现回调函数](https://www.jianshu.com/p/04471ca9601f)中介绍了如何实现回调函数，示例的代码中是通过声明函数指针类型的方式，现在我们可以使用`std::function`来简化流程
+## 进一步讨论
+在文章 [C++/Qt 实现回调函数](../Qt/Qt%20实现回调函数.md) 中介绍了如何实现回调函数，示例的代码中是通过声明函数指针类型的方式，现在我们可以使用 `std::function` 来简化流程
 ```
 class Core{
 public:
@@ -75,4 +75,4 @@ private:
     std::function<void()> m_callbackfun; //回调函数模板
 }
 ```
-调用模块则可以使用`RegiseterExitCallback`函数，来注册回调函数，可以通过`bind()`、`lambda`等方式来传入`function`对象类型。
+调用模块则可以使用 `RegiseterExitCallback` 函数，来注册回调函数，可以通过 `bind()`、`lambda` 等方式来传入 `function` 对象类型。

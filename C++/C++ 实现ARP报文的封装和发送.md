@@ -1,6 +1,8 @@
-#### C++ 实现对ARP报文的封装和发送  
+## C++ 实现对ARP报文的封装和发送  
 因为需要对ARP报文进行封装，所以先了解下ARP报文的格式，并根据报文结构，自定义ARP报文包结构体  
+
 **ARP报文的格式**
+
 ![ARP报文格式](https://upload-images.jianshu.io/upload_images/22192996-03e13fad1b837ddf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 **定义结构体**
@@ -134,6 +136,7 @@ int main(){
 }
 ```
 **运行结果**
+
 ![ARP报文发送](https://upload-images.jianshu.io/upload_images/22192996-5ced0e93a72484de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 利用Wireshark可以抓到程序发送的ARP报文

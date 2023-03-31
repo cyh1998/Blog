@@ -1,7 +1,7 @@
-红黑树的左旋、右旋和插入操作，请移步：[C++ 实现红黑树(一)](https://www.jianshu.com/p/f4c02f358751)  
-#### 删除
+红黑树的左旋、右旋和插入操作，请移步：[C++ 实现红黑树(一)](./C++%20实现红黑树(一).md)  
+### 删除
 整体思路：1.将红黑树当作一颗二叉查找树，寻找待删除的结点；2.删除该结点；3.通过"旋转和重新着色"等一系列操作来修正该树，使之重新成为一棵红黑树  
-第二步的删除操作分为三种情况：
+第二步的删除操作分为三种情况：  
 1. 待删除结点没有孩子 -> 直接删除
 2. 待删除结点有一个孩子 -> 删除结点，并让唯一的孩子结点顶替其位置
 3. 待删除结点左右孩子均存在 -> 寻找待删除结点的后继结点，两者互换，即将删除"待删除结点"转化为删除"后继结点"。 在"待删除节点"有两个非空子节点的情况下，其后继结点不可能是双子非空。若没有儿子，则按"情况1 "进行处理；若只有一个儿子，则按"情况2 "进行处理。
@@ -47,7 +47,7 @@ void RBTree<keytype>::__remove(Node *&root,Node *node){
     delete node;
 }
 ```
-#### 删除修正
+**删除修正**  
 当删除的结点颜色为黑色时，需要对红黑树进行修正操作
 针对顶替删除结点的结点，分为三种情况：
 1. 顶替结点为红色 -> 直接将顶替结点改为黑色
@@ -138,7 +138,7 @@ void RBTree<keytype>::out_correct(Node *&root,Node *node){
     node->color = Black;
 }
 ```
-####整体实现代码以及测试
+### 整体实现代码以及测试
 ```
 #include <iostream>
 
@@ -482,8 +482,8 @@ int main(){
 
 ![结果](https://upload-images.jianshu.io/upload_images/22192996-55272b4c1a69d119.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-github地址：[R-B-Tree](https://github.com/cyh1998/R-B-Tree)
-参考：
+github地址：[R-B-Tree](https://github.com/cyh1998/R-B-Tree)  
+参考：  
 https://www.cnblogs.com/skywang12345/p/3245399.html
 https://www.cnblogs.com/alantu2018/p/8462017.html
 

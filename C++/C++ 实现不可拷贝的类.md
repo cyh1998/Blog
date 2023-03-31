@@ -1,9 +1,9 @@
-#### 概 述
+## 概 述
 在C++中，经常需要实现不可拷贝的类，本文介绍如何实现不可拷贝的类。
 
-#### 实 现
-**1. 将拷贝构造函数和赋值函数定义为私有函数**
-**Boost库**采用了这样的方式，提供了`noncopyable`基类，来实现不可拷贝的类。源码如下：
+## 实 现
+**1. 将拷贝构造函数和赋值函数定义为私有函数**  
+**Boost库**采用了这样的方式，提供了 `noncopyable` 基类，来实现不可拷贝的类。源码如下：
 ```
 namespace boost {
 //  Private copy constructor and copy assignment ensure classes derived from
@@ -26,10 +26,10 @@ namespace noncopyable_  // protection from unintended ADL
 typedef noncopyable_::noncopyable noncopyable;
 } // namespace boost
 ```
-我们可以引入Boost库，直接继承`noncopyable`基类。当然，也可以参考Boost库，自己实现一个不可拷贝的基类。
+我们可以引入Boost库，直接继承 `noncopyable` 基类。当然，也可以参考Boost库，自己实现一个不可拷贝的基类。
 
-**2. 利用 C++ 的 `=delete`**
-`=delete`能够禁止编译器生成默认函数，因此，只需要为拷贝构造函数和赋值函数添加`=delete`，示例如下：
+**2. 利用 C++ 的 `=delete`**  
+`=delete` 能够禁止编译器生成默认函数，因此，只需要为拷贝构造函数和赋值函数添加 `=delete`，示例如下：
 ```
 class Player {
 public:
