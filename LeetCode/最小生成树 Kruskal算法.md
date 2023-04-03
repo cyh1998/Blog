@@ -1,11 +1,11 @@
-#### 前 言
-求连通图的最小生成树，可以用`Kruskal(克鲁斯卡尔)`算法和`Prim(普里姆)`算法。本文介绍**Kruskal**算法的思路和实现。
+## 前 言
+求连通图的最小生成树，可以用 `Kruskal(克鲁斯卡尔)` 算法和 `Prim(普里姆)` 算法。本文介绍**Kruskal**算法的思路和实现。
 
-#### 思 路
+## 思 路
 Kruskal算法以**边**为基础，每次从集合中选择最小边，判断该边的两个端点是否属于同一个连通分量：若是，则跳过该边；反之，将两个端点合并连通分量，直到所有端点属于同一个连通分量，算法结束。  
-不难看出，我们需要使用[并查集](https://www.jianshu.com/p/a6cac02ecf66)。
+不难看出，我们需要使用[并查集](./并查集.md)。
 
-由于每次选择最小边，所以需要对所有边进行排序，设计如下的结构体，包含两个端点`x`、`y`以及权值`len`，即两点之间的距离
+由于每次选择最小边，所以需要对所有边进行排序，设计如下的结构体，包含两个端点 `x`、`y` 以及权值 `len`，即两点之间的距离
 ```
 struct Edge {
     int len; //权值
@@ -15,7 +15,7 @@ struct Edge {
 };
 ```
 
-#### 实 现
+## 实 现
 根据算法思路，实现代码如下：
 ```
 class Djset { //并查集模板
@@ -82,4 +82,4 @@ public:
 };
 ```
 LeetCode题目：[1584. 连接所有点的最小费用](https://leetcode-cn.com/problems/min-cost-to-connect-all-points/)  
-更多我的Leetcode题解，详见[Leetcode题解](https://github.com/cyh1998/algorithm)
+更多我的Leetcode题解，详见 [Leetcode题解](https://github.com/cyh1998/algorithm)

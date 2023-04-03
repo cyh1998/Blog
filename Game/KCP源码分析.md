@@ -1,7 +1,7 @@
-#### 前 言
-当游戏对实时性，打击感要求比较高，或者需要控制大量游戏单位时，往往会使用帧同步。帧同步则需要可靠的UDP协议，一般会选择[KCP](https://github.com/skywind3000/kcp)。有关KCP的优点和特性不再赘述了，网上包括官网有关于KCP的介绍。本文主要分析KCP的源码以及实现。
+## 前 言
+当游戏对实时性，打击感要求比较高，或者需要控制大量游戏单位时，往往会使用帧同步。帧同步则需要可靠的UDP协议，一般会选择 [KCP](https://github.com/skywind3000/kcp)。有关KCP的优点和特性不再赘述了，网上包括官网有关于KCP的介绍。本文主要分析KCP的源码以及实现。
 
-#### 源 码
+## 源 码
 **一、双向链表 IQUEUEHEAD**  
 KCP中设计的链表是一个环状双向链表，结构体只有两个指针，源码以及操作接口如下：
 ```
@@ -47,22 +47,23 @@ struct IQUEUEHEAD {
 // 链表是否为空
 #define IQUEUE_IS_EMPTY(entry) ((entry) == (entry)->next)
 ```
-链表结构本身并没有定义任何value字段，而是让持有`IQUEUEHEAD`的结构体自己去定义。当持有了`IQUEUEHEAD`，该结构体就可以通过`IQUEUEHEAD`将自己构建成一个环状双向链表，如图：  
+链表结构本身并没有定义任何value字段，而是让持有 `IQUEUEHEAD` 的结构体自己去定义。当持有了 `IQUEUEHEAD`，该结构体就可以通过 `IQUEUEHEAD` 将自己构建成一个环状双向链表，如图：
+
 ![持有IQUEUEHEAD的结构体](https://upload-images.jianshu.io/upload_images/22192996-693c7a5910cb2915.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-那如何通过`IQUEUEHEAD`来获取到其所在的结构体呢？需要看下`IQUEUE_ENTRY`宏的展开
+那如何通过 `IQUEUEHEAD` 来获取到其所在的结构体呢？需要看下 `IQUEUE_ENTRY` 宏的展开
 ```
 (type*)( ((char*)((type*)ptr)) - ((size_t) &((type *)0)->member)) )
 ```
-意思就是将`IQUEUEHEAD`指针`ptr`减去`member`成员在类型`type`中的偏移量，这样就得到了所在类型`type`的首地址。
+意思就是将 `IQUEUEHEAD` 指针 `ptr` 减去 `member` 成员在类型 `type` 中的偏移量，这样就得到了所在类型 `type` 的首地址。
 
 **二、数据段结构 IKCPSEG**  
-`IKCPSEG`是发送包的数据结构，其包含了两部分信息：
-- 发送信息：`conv`、`cmd`、`frg`、`wnd`、`ts`、`sn`、`una`、`len`、`data`，其中`cmd`包含四种类型  
-  - `IKCP_CMD_PUSH`：发送数据包
-  - `IKCP_CMD_ACK`：返回确认包
-  - `IKCP_CMD_WASK`：探测对端可用窗口大小
-  - `IKCP_CMD_WINS`：告知对端自身可用窗口大小
+`IKCPSEG` 是发送包的数据结构，其包含了两部分信息：
+- 发送信息：`conv`、`cmd`、`frg`、`wnd`、`ts`、`sn`、`una`、`len`、`data`，其中 `cmd` 包含四种类型  
+  - `IKCP_CMD_PUSH` ：发送数据包
+  - `IKCP_CMD_ACK` ：返回确认包
+  - `IKCP_CMD_WASK` ：探测对端可用窗口大小
+  - `IKCP_CMD_WINS` ：告知对端自身可用窗口大小
 - 控制信息：其余的为控制信息，不会发送给对端。暂存于发送消息队列中，用来判断超时重发、快速重发。
 ```
 /**
