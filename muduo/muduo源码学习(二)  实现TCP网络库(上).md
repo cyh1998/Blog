@@ -1,10 +1,10 @@
-#### 概 述
-muduo在实现非阻塞TCP连接时，对socket相关的内容进行了非常详尽的封装，本文梳理下muduo中`Acceptor InetAddress Socket SocketsOps`四个类的相关实现。  
+## 概 述
+muduo在实现非阻塞TCP连接时，对socket相关的内容进行了非常详尽的封装，本文梳理下muduo中 `Acceptor InetAddress Socket SocketsOps` 四个类的相关实现。    
 由于muduo源码的封装比较复杂，本人在其基础上进行了简化，保留其中核心的代码供于学习，因此示例代码非muduo源码。
 
-#### 实 现
+## 实 现
 **1. InetAddress**  
-`InetAddress`是对网络地址的相关封装，包括初始化网络地址结构，设置/获取网络地址数据等等。源码中区分对IVP6和IVP4的实现，以及对IP地址封装了`StringArg`类。  
+`InetAddress` 是对网络地址的相关封装，包括初始化网络地址结构，设置/获取网络地址数据等等。源码中区分对IVP6和IVP4的实现，以及对IP地址封装了 `StringArg` 类。  
 这里只保留对IVP4的实现，IP地址使用字符串代替，简化代码如下：
 ```
 //InetAddress.h
@@ -54,11 +54,11 @@ void InetAddress::setSockAddr(struct sockaddr_in& addr) {
 }
 ```
 **说明：**  
-源码对`htobe32()`、`htobe16()`等字节序转换函数也进行了封装，在`\net\Endian.h`中，这里直接使用系统函数。  
-源码将`getSockAddr()`等函数的具体实现封装到了`SocketsOps`类中，这里因为和网络地址直接相关，在本类中实现。
+源码对 `htobe32()`、`htobe16()` 等字节序转换函数也进行了封装，在 `\net\Endian.h` 中，这里直接使用系统函数。  
+源码将 `getSockAddr()` 等函数的具体实现封装到了 `SocketsOps` 类中，这里因为和网络地址直接相关，在本类中实现。
 
 **2. Socket**  
-`Socket`是一个RAII handle，封装了socket文件描述符的生命周期。简化代码如下：
+`Socket` 是一个RAII handle，封装了socket文件描述符的生命周期。简化代码如下：
 ```
 //Socket.h
 #include "../Base/Noncopyable.h"
@@ -117,10 +117,10 @@ void Socket::setPortReusable(bool on) const {
 }
 
 ```
-`Socket`类只提供接口，不做任何操作，相关操作封装在`SocketsOps`中。
+`Socket` 类只提供接口，不做任何操作，相关操作封装在 `SocketsOps` 中。
 
 **3. SocketsOps**  
-`SocketsOps`是对所有socket相关api的封装，简化代码如下：
+`SocketsOps` 是对所有socket相关api的封装，简化代码如下：
 ```
 //SocketsOps.h
 #include <arpa/inet.h>
@@ -177,7 +177,7 @@ int sockets::createNonblockingSocket() {
 }
 ```
 **说明：**  
-对于将文件描述符设置为非阻塞，我们可以使用`fcntl()`来设置，如下：
+对于将文件描述符设置为非阻塞，我们可以使用 `fcntl()` 来设置，如下：
 ```
 // 将文件描述符设置为非阻塞的
 int setnonblocking(int fd) {
@@ -187,10 +187,10 @@ int setnonblocking(int fd) {
     return old_option;
 }
 ```
-对于现在的Linux(Linux 2.6.28版本以后，参考文档[Linux手册](https://man7.org/linux/man-pages/man2/accept4.2.html))，可以一步设置为非阻塞，如上文示例代码，muduo源码中分别提供了两种实现方式，这里简化只保留了更便捷的实现方式。
+对于现在的Linux(Linux 2.6.28版本以后，参考文档 [Linux手册](https://man7.org/linux/man-pages/man2/accept4.2.html))，可以一步设置为非阻塞，如上文示例代码，muduo源码中分别提供了两种实现方式，这里简化只保留了更便捷的实现方式。
 
 **4. Acceptor**  
-`Acceptor`类是对连接接收相关接口的封装，用于accept新的TCP连接。其构造函数与成员函数`Acceptor::listen()`执行创建TCP服务端的传统步骤，即调用`socket()`、`bind()`、`listen()`，数据成员`Channel`观察此socket上的可读事件，并回调`Acceptor::handleRead()`，后者调用`accept()`来接收连接，并回调用户callback。简化代码如下：
+`Acceptor` 类是对连接接收相关接口的封装，用于accept新的TCP连接。其构造函数与成员函数 `Acceptor::listen()` 执行创建TCP服务端的传统步骤，即调用 `socket()`、`bind()`、`listen()`，数据成员 `Channel` 观察此socket上的可读事件，并回调 `Acceptor::handleRead()`，后者调用 `accept()` 来接收连接，并回调用户callback。简化代码如下：
 ```
 //Acceptor.h
 #include "../Base/Noncopyable.h"

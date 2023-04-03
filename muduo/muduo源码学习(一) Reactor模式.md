@@ -1,11 +1,11 @@
-#### 概 述
-最近在学习muduo源码，这里梳理下muduo库中对Reactor模式的实现。
-muduo库中使用三个类：`EventLoop`，`Channel`，`Poller` 来实现Reactor模式的核心，本文基于Epoll来梳理下核心的代码。  
-**注：** 文章示例中的代码并非muduo源码，而是本人基于muduo源码的学习实现的一个网络库，github地址[NetLib](https://github.com/cyh1998/NetLib)。muduo源码地址[muduo](https://github.com/chenshuo/muduo)。
+## 概 述
+最近在学习muduo源码，这里梳理下muduo库中对Reactor模式的实现。  
+muduo库中使用三个类： `EventLoop`，`Channel`，`Poller` 来实现Reactor模式的核心，本文基于Epoll来梳理下核心的代码。  
+**注：** 文章示例中的代码并非muduo源码，而是本人基于muduo源码的学习实现的一个网络库，github地址 [NetLib](https://github.com/cyh1998/NetLib)。muduo源码地址 [muduo](https://github.com/chenshuo/muduo)。
 
-#### 实 现
+## 实 现
 **1. EventLoop**  
-事件循环，其核心函数是`EventLoop::loop()`。函数中循环执行：调用`Epoller::poll()`，返回就绪的事件容器`vector<Channel*>m_activeChannels`，遍历该容器，通过`Channel::handleEvent()`分发事件。代码如下：
+事件循环，其核心函数是 `EventLoop::loop()`。函数中循环执行：调用 `Epoller::poll()`，返回就绪的事件容器 `vector<Channel*>m_activeChannels`，遍历该容器，通过 `Channel::handleEvent()` 分发事件。代码如下：
 ```
 void EventLoop::loop() {
     if (!m_looping) {
@@ -39,7 +39,7 @@ std::function<void()> m_readCallback;  //可读事件回调
 std::function<void()> m_writeCallback; //可写事件回调
 std::function<void()> m_errorCallback; //错误事件回调
 ```
-Channel的核心函数是`Channel::handleEvent()`，函数根据事件的类型触发不同的回调函数，代码如下：
+Channel的核心函数是 `Channel::handleEvent()`，函数根据事件的类型触发不同的回调函数，代码如下：
 ```
 void Channel::handleEvent() {
     // 触发错误事件
@@ -65,7 +65,7 @@ void enableReading() { m_events |= s_readEvent; update(); } //注册可读事件
 void enableWriting() { m_events |= s_writeEvent; update(); } //注册可写事件
 void disableAll() { m_events = s_noneEvent; update(); } //取消全部事件
 ```
-其中`Channel::update()`通过所属的EventLoop调用`EventLoop::updateChannel(Channel*)`，再调用`Epoller::updateChannel(Channel*)`，最后通过`epoll_ctl()`来更新注册事件表。相关代码如下：
+其中 `Channel::update()` 通过所属的EventLoop调用 `EventLoop::updateChannel(Channel*)`，再调用 `Epoller::updateChannel(Channel*)`，最后通过 `epoll_ctl()` 来更新注册事件表。相关代码如下：
 ```
 // Channel::update()
 void Channel::update() {
@@ -112,8 +112,8 @@ void Epoller::update(int operation, Channel* channel) const {
 }
 ```
 **3. Epoller(Poller)**  
-IO多路复用，muduo中分别封装了poll和epoll，这里我们只以epoll为例。
-Epoller的核心是`Epoller::poll()`，即调用`epoll_wait()`获取当前活动的IO事件，通过私有函数`fillActiveChannels()`添加到传入的`activeChannels`中并返回。代码如下：
+IO多路复用，muduo中分别封装了poll和epoll，这里我们只以epoll为例。  
+Epoller的核心是 `Epoller::poll()`，即调用 `epoll_wait()` 获取当前活动的IO事件，通过私有函数 `fillActiveChannels()` 添加到传入的 `activeChannels` 中并返回。代码如下：
 ```
 void Epoller::poll(int timeoutMs, ChannelList* activeChannels) {
     int numEvents = ::epoll_wait(m_epollFd, m_events.data(), static_cast<int>(m_events.size()), timeoutMs);

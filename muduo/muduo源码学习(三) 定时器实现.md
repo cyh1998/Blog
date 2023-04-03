@@ -1,11 +1,11 @@
-#### 前 言
-之前在学习《Linux高性能服务器编程》时，书中实现的各类定时器都是通过`alarm()`发送信号，配合服务端处理`SIGALRM`信号来实现定时机制。  
-陈硕在《Linux多线程服务端编程》中提到：在多线程程序中，第一原则是不要使用信号。muduo源码中通过Linux提供的`timerfd`将时间变成了一个文件描述符，该描述符在定时器超时的那一刻变为可读，可以很方便的融入到select/poll/epoll中，统一事件源。  
+## 前 言
+之前在学习《Linux高性能服务器编程》时，书中实现的各类定时器都是通过 `alarm()` 发送信号，配合服务端处理 `SIGALRM` 信号来实现定时机制。   
+陈硕在《Linux多线程服务端编程》中提到：在多线程程序中，第一原则是不要使用信号。muduo源码中通过Linux提供的 `timerfd` 将时间变成了一个文件描述符，该描述符在定时器超时的那一刻变为可读，可以很方便的融入到select/poll/epoll中，统一事件源。  
 本文介绍muduo中定时器的相关实现
 
-#### 实 现
+## 实 现
 **一、计时**  
-muduo中使用`gettimeofday()`来获取当前时间，支持微秒级计时，有关的系统调用如下：
+muduo中使用 `gettimeofday()` 来获取当前时间，支持微秒级计时，有关的系统调用如下：
 ```
 #include <sys/time.h>
 
@@ -16,10 +16,10 @@ struct timeval {
 
 int gettimeofday(struct timeval* tv, struct timezone* tz);
 ```
-`gettimeofday()`将当前时间存放在于`tv`，时区信息存放于`tz`。成功返回0，失败返回-1
+`gettimeofday()` 将当前时间存放在于 `tv`，时区信息存放于 `tz`。成功返回0，失败返回-1
 
 **二、timerfd**  
-通过`timerfd`系列函数可将时间变成一个文件描述符，并设置超时时间。muduo中使用的系统调用如下：
+通过 `timerfd` 系列函数可将时间变成一个文件描述符，并设置超时时间。muduo中使用的系统调用如下：
 ```
 #include <sys/timerfd.h>
 
@@ -38,29 +38,29 @@ int timerfd_settime(int fd, int flags,
                     const struct itimerspec *new_value,
                     struct itimerspec *old_value);
 ```
-`timerfd_create()`创建一个用于定时器的文件描述符，参数说明：  
-`clockid`可选值为：
-- `CLOCK_REALTIME`：系统实时时间。若用户更改系统时间，则其随之而改变
-- `CLOCK_MONOTONIC`：从系统启动那一刻开始计时，不受用户更改系统时间的影响
+`timerfd_create()` 创建一个用于定时器的文件描述符，参数说明：  
+`clockid` 可选值为：
+- `CLOCK_REALTIME` ：系统实时时间。若用户更改系统时间，则其随之而改变
+- `CLOCK_MONOTONIC` ：从系统启动那一刻开始计时，不受用户更改系统时间的影响
 
-`flags`可选值为：
-- `TFD_NONBLOCK`：非阻塞
-- `TFD_CLOEXEC`：调用exec时自动close
+`flags` 可选值为：
+- `TFD_NONBLOCK` ：非阻塞
+- `TFD_CLOEXEC` ：调用exec时自动close
 
-`timerfd_settime()`用于设置timerfd的超时时间，参数说明：  
-`fd`：`timerfd_create()`返回的文件句柄  
-`flags`：1表示绝对时间；0表示相对时间  
-`new_value`：需要设置的超时时间和间隔  
-`old_value`：旧的超时时间  
+`timerfd_settime()` 用于设置timerfd的超时时间，参数说明：  
+`fd` ：`timerfd_create()` 返回的文件句柄  
+`flags` ：1表示绝对时间；0表示相对时间  
+`new_value` ：需要设置的超时时间和间隔  
+`old_value` ：旧的超时时间  
 
 **三、定时器**  
-muduo中用四个类`Timestamp`、`Timer`、`TimerId`、`TimerQueue`来实现定时器。
+muduo中用四个类 `Timestamp`、`Timer`、`TimerId`、`TimerQueue` 来实现定时器。
 
 **1. Timestamp**  
-`Timestamp`是对时间戳的封装，包括获取当前时间、添加时间、是否超时等等；重载了`<`、`==`等运算符号；以及上文对`timerfd`系统调用的封装。源码比较简单，这里就不展示了。
+`Timestamp` 是对时间戳的封装，包括获取当前时间、添加时间、是否超时等等；重载了 `<`、`==` 等运算符号；以及上文对 `timerfd` 系统调用的封装。源码比较简单，这里就不展示了。
 
 **2. Timer**  
-`Timer`是定时器的封装，保存回调函数、超时时间`Timestamp`、定时间隔、是否重复等等，源码如下：
+`Timer` 是定时器的封装，保存回调函数、超时时间 `Timestamp`、定时间隔、是否重复等等，源码如下：
 ```
 class Timer : noncopyable
 {
@@ -96,7 +96,7 @@ class Timer : noncopyable
   static AtomicInt64 s_numCreated_; //原子计数
 };
 ```
-当重复定时器触发超时回调后，通过`Timer::restart()`来重新计算超时时间：
+当重复定时器触发超时回调后，通过 `Timer::restart()` 来重新计算超时时间：
 ```
 void Timer::restart(Timestamp now)
 {
@@ -112,10 +112,10 @@ void Timer::restart(Timestamp now)
 ```
 
 **3. TimerId**  
-`TimerId`保存了定时器`Timer`和其唯一的ID。ID在向容器中添加定时器时返回，并且可以通过此ID来取消对应的定时器。源码比较简单，这里就不展示了。
+`TimerId` 保存了定时器 `Timer` 和其唯一的ID。ID在向容器中添加定时器时返回，并且可以通过此ID来取消对应的定时器。源码比较简单，这里就不展示了。
 
 **4. TimerQueue**  
-`TimerQueue`是定时器容器类，用于统一管理所有定时任务。muduo采用`std::set`(红黑树)来存储，为了处理同一时间会有多个定时任务到来，muduo将超时时间`Timestamp`和定时器指针`Timer*`，组成`std::pair<Timestamp, Timer*>`作为`std::set`的key。类定义的源码如下：
+`TimerQueue` 是定时器容器类，用于统一管理所有定时任务。muduo采用 `std::set` (红黑树)来存储，为了处理同一时间会有多个定时任务到来，muduo将超时时间 `Timestamp` 和定时器指针 `Timer*`，组成 `std::pair<Timestamp, Timer*>` 作为 `std::set` 的key。类定义的源码如下：
 ```
 class TimerQueue : noncopyable
 {
@@ -167,7 +167,7 @@ class TimerQueue : noncopyable
 };
 ```
 ****
-首先，看下`TimerQueue`提供的添加定时器的接口函数`addTimer()`：
+首先，看下 `TimerQueue` 提供的添加定时器的接口函数 `addTimer()` ：
 ```
 TimerId TimerQueue::addTimer(TimerCallback cb,
                              Timestamp when,
@@ -181,8 +181,8 @@ TimerId TimerQueue::addTimer(TimerCallback cb,
   return TimerId(timer, timer->sequence());
 }
 ```
-`addTimer()`通过所属的事件循环调用`EventLoop::runInLoop()`触发添加定时器函数`TimerQueue::addTimerInLoop()`。关于`EventLoop::runInLoop()`，参考 [muduo源码学习(四) 实现TCP网络库(中)](https://www.jianshu.com/p/45be00136ff7)。  
-这里继续看`addTimerInLoop()`函数：
+`addTimer()` 通过所属的事件循环调用 `EventLoop::runInLoop()` 触发添加定时器函数 `TimerQueue::addTimerInLoop()`。关于 `EventLoop::runInLoop()`，参考 [muduo源码学习(四) 实现TCP网络库(中)](./muduo源码学习(四)%20实现TCP网络库(中).md)。  
+这里继续看 `addTimerInLoop()` 函数：
 ```
 void TimerQueue::addTimerInLoop(Timer* timer)
 {
@@ -196,7 +196,7 @@ void TimerQueue::addTimerInLoop(Timer* timer)
   }
 }
 ```
-`addTimerInLoop()`实际就是调用了`TimerQueue::insert()`来添加定时器到容器中。如果定时器容器为空或者新添加的定时器位于容器的顶部，即超时时间比当前小，就通过`resetTimerfd()`(`timerfd_settime()`的封装)来更新超时时间。`insert()`源码如下：
+`addTimerInLoop()` 实际就是调用了 `TimerQueue::insert()` 来添加定时器到容器中。如果定时器容器为空或者新添加的定时器位于容器的顶部，即超时时间比当前小，就通过 `resetTimerfd()` ( `timerfd_settime()` 的封装)来更新超时时间。`insert()` 源码如下：
 ```
 bool TimerQueue::insert(Timer* timer)
 {
@@ -226,8 +226,8 @@ bool TimerQueue::insert(Timer* timer)
   return earliestChanged;
 }
 ```
-定时器添加的流程就是：`addTimer()`=>`EventLoop::runInLoop()`=>`addTimerInLoop()`=>`insert()`。  
-但是使用时，并不直接调用`addTimer()`，`EventLoop`对其做了更加完善的封装，提供给用户，接口如下：
+定时器添加的流程就是：`addTimer()` => `EventLoop::runInLoop()` => `addTimerInLoop()` => `insert()`。  
+但是使用时，并不直接调用 `addTimer()`，`EventLoop` 对其做了更加完善的封装，提供给用户，接口如下：
 ```
 TimerId EventLoop::runAt(Timestamp time, TimerCallback cb) { /... }
 TimerId EventLoop::runAfter(double delay, TimerCallback cb) { /... }
@@ -235,7 +235,7 @@ TimerId EventLoop::runEvery(double interval, TimerCallback cb) { /... }
 ```
 
 ****
-当`timerfd`超时，调用定时器超时的处理函数`TimerQueue::handleRead()`，此函数在容器构造时通过`Channel`注册，源码如下：
+当 `timerfd` 超时，调用定时器超时的处理函数 `TimerQueue::handleRead()`，此函数在容器构造时通过 `Channel` 注册，源码如下：
 ```
 TimerQueue::TimerQueue(EventLoop* loop)
   : loop_(loop),
@@ -249,7 +249,7 @@ TimerQueue::TimerQueue(EventLoop* loop)
   timerfdChannel_.enableReading();
 }
 ```
-`handleRead()`通过`TimerQueue::getExpired()`从定时器列表中找到所有到期的定时器，然后依次执行其回调函数，并将重复的超时定时器重新添加到定时器列表`timers_`中，源码如下：
+`handleRead()` 通过 `TimerQueue::getExpired()` 从定时器列表中找到所有到期的定时器，然后依次执行其回调函数，并将重复的超时定时器重新添加到定时器列表 `timers_` 中，源码如下：
 ```
 void TimerQueue::handleRead()
 {
@@ -329,19 +329,19 @@ void TimerQueue::reset(const std::vector<Entry>& expired, Timestamp now)
 ```
 ****
 最后，梳理下muduo中定时器工作的整个流程：  
-1. 利用`timerfd`将定时器变成文件描述符进行监听
-2. 通过`EventLoop`封装的接口，即调用`addTimer()`添加定时器
-3. 当超时时间到达，`timerfd`变为可读，对应的`Channel`调用超时函数`handleRead()`
-4. 超时函数将找出容器中所有超时的定时器，通过入口函数`run()`依次调用用户注册的回调函数
+1. 利用 `timerfd` 将定时器变成文件描述符进行监听
+2. 通过 `EventLoop` 封装的接口，即调用 `addTimer()` 添加定时器
+3. 当超时时间到达，`timerfd` 变为可读，对应的 `Channel` 调用超时函数 `handleRead()`
+4. 超时函数将找出容器中所有超时的定时器，通过入口函数 `run()` 依次调用用户注册的回调函数
 5. 对于重复的定时器，重新添加到容器中
 
-#### 补 充
-陈硕在书中提到，目前`TimerQueue`的实现有一个不理想的地方，即`Timer`是用裸指针来管理的，必要的时候需要手动delete。他还提到用`shared_pte`小题大做，可以使用C++11提供的`unique_ptr`来实现。  
-于是，我在实践中将`Timer*`改为了`unique_ptr<Timer>`来管理，即
+## 补 充
+陈硕在书中提到，目前 `TimerQueue` 的实现有一个不理想的地方，即 `Timer` 是用裸指针来管理的，必要的时候需要手动delete。他还提到用 `shared_pte` 小题大做，可以使用C++11提供的 `unique_ptr` 来实现。  
+于是，我在实践中将 `Timer*` 改为了 `unique_ptr<Timer>` 来管理，即
 ```
 typedef std::pair<Timestamp, std::unique_ptr<Timer>> Entry;
 ```
-然而，在函数`TimerQueue::getExpired()`中，当拷贝超时定时器到`vector`中时，出现了问题，代码如下：
+然而，在函数 `TimerQueue::getExpired()` 中，当拷贝超时定时器到 `vector` 中时，出现了问题，代码如下：
 ```
 // 使用默认的方式
 std::copy(m_timers.begin(), end, back_inserter(expired));
@@ -354,8 +354,8 @@ std::vector<Entry> expired;
 expired.assign(m_timers.begin(), s.end());
 ```
 以上的方式，都无法通过编译，原因如下：  
-`std::unique_ptr`是不能 cpoy 的，只能 move，因此包含`std::unique_ptr`的`std::pair<>`也是如此。但由于 `std::set`的 key 是不可修改的，只能 copy。于是当执行上面的语句时，编译器都会默认使用 copy pair 的方式去执行，最终失败了。  
-本人最后还是使用`shared_pte`来改造了`Timer*`，由于本人能力有限，不知道是否有更好的实现方式。  
+`std::unique_ptr` 是不能 cpoy 的，只能 move，因此包含 `std::unique_ptr` 的 `std::pair<>` 也是如此。但由于 `std::set` 的 key 是不可修改的，只能 copy。于是当执行上面的语句时，编译器都会默认使用 copy pair 的方式去执行，最终失败了。   
+本人最后还是使用 `shared_pte` 来改造了 `Timer*`，由于本人能力有限，不知道是否有更好的实现方式。  
 
 本人参考muduo实现的网络库，有兴趣，详见github [NetLib](https://github.com/cyh1998/NetLib)  
 参考：  

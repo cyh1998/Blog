@@ -25,19 +25,19 @@ date -s "2022-08-01 18:00:00"
 ```
 **6. iostat相关**  
 cpu属性值说明：
-- `%user`：CPU处在用户模式下的时间百分比
-- `%nice`：CPU处在带NICE值的用户模式下的时间百分比
-- `%system`：CPU处在系统模式下的时间百分比
-- `%iowait`：CPU等待输入输出完成时间的百分比
-- `%steal`：管理程序维护另一个虚拟处理器时，虚拟CPU的无意识等待时间百分比
-- `%idle`：CPU空闲时间百分比
+- `%user` ：CPU处在用户模式下的时间百分比
+- `%nice` ：CPU处在带NICE值的用户模式下的时间百分比
+- `%system` ：CPU处在系统模式下的时间百分比
+- `%iowait` ：CPU等待输入输出完成时间的百分比
+- `%steal` ：管理程序维护另一个虚拟处理器时，虚拟CPU的无意识等待时间百分比
+- `%idle` ：CPU空闲时间百分比
 
 disk属性值说明：
-- `tps`：每秒钟发送到的I/O请求数
-- `Blk_read/s`：每秒读取的block数
-- `Blk_wrtn/s`：每秒写入的block数
-- `Blk_read`：读入的block总数
-- `Blk_wrtn`：写入的block总数
+- `tps` ：每秒钟发送到的I/O请求数
+- `Blk_read/s` ：每秒读取的block数
+- `Blk_wrtn/s` ：每秒写入的block数
+- `Blk_read` ：读入的block总数
+- `Blk_wrtn` ：写入的block总数
 
 每隔1秒，显示一次统计信息
 ```
