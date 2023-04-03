@@ -117,7 +117,7 @@ set completeopt=menuone,menu,longest,preview
 也可以是其他路径，只要确保和提交文件所在目录一致即可  
 - `map <C-F12> :!ctags -R --sort=yes --c++-kinds=+pl --fields=+iaS --extra=+q .<CR>` ：
 正常补全只能提示C++原有的内容，需要想要提示自己写的相关类成员变量、成员函数等等。就需要添加此行设置。  
-在vim模式下，通过`Ctrl+F12`就可以构建自己项目中的提示标签，快捷键也可以在`map <XX> `中自行设置。
+在vim模式下，通过 `Ctrl+F12` 就可以构建自己项目中的提示标签，快捷键也可以在 `map <XX>` 中自行设置。
 
 剩下的就是 `OmniCppComplete` 自身的设置，这里不再赘述。
 如果还有其他问题，可以参考官方 [WIKI](https://vim.fandom.com/wiki/C%2B%2B_code_completion)。
