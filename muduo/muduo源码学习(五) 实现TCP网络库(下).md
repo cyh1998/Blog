@@ -2,7 +2,7 @@
 上一篇文章介绍了连接的创建，引出了 `TcpConnection` 类。其作用就是处理socket上的IO事件，执行各种回调。本文介绍 `TcpConnection` 对断开连接、读取数据、发送数据的处理。
 
 ## 断开连接
-连接的关闭分为主动断开和被动断开，两者的处理方式基本一致。`muduo`采用的连接关闭方式：被动断开，其核心函数为 `TcpConnection::handleClose()`。书中提到，如果需要主动断开，添加一个接口调用 `handleClose()` 即可。  
+连接的关闭分为主动断开和被动断开，两者的处理方式基本一致。`muduo` 采用的连接关闭方式：被动断开，其核心函数为 `TcpConnection::handleClose()`。书中提到，如果需要主动断开，添加一个接口调用 `handleClose()` 即可。  
 
 对于远端连接断开的感知：在可读事件处理函数 `handleRead()` 中，当read返回值为0时，即远端断开了连接，调用 
 `TcpConnection::handleClose()`。此时处理如下：  
@@ -82,7 +82,7 @@ void TcpConnection::send(const StringPiece& message)
 ```
 在确保是连接状态的情况下，如果在当前IO线程触发就调用 `TcpConnection::sendInLoop()`，反之则使用 `runInLoop` 将该任务抛给IO线程执行。有关 `runInLoop` 的内容在上一篇已经介绍过，这里不再赘述。  
 在 `TcpConnection::sendInLoop()` 中，处理如下：  
-**1.** 若`outputBuffer_`为空，直接发送数据  
+**1.** 若 `outputBuffer_` 为空，直接发送数据  
 **2.** 若发送数据没有写完，统计剩余的字节数，将剩余数据写入 `outputBuffer_`  
 **3.** 注册可写事件  
 
