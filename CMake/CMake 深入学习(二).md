@@ -37,7 +37,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 ***
 ps：如果不使用 `set_target_properties()` 来重新定义库文件输出的名字也可以，那么库的名字就是 `add_library()` 里定义的名字。但是当我们连续两次使用 `add_library()` 来指定库文件的名字时，不能重名。所以使用 `set_target_properties()` 把库文件的名字设置为相同，这样相对来说会好看点。
 
-最后进入`build` 目录，执行 `cmake ..` 以及 `make`  
+最后进入 `build` 目录，执行 `cmake ..` 以及 `make`  
 结果如下：
 
 ![结果](https://upload-images.jianshu.io/upload_images/22192996-74525553ec8459e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
@@ -94,7 +94,7 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 `link_directories()` ：用于添加需要链接的库文件目录    
 `LIBRARY_OUTPUT_PATH` ：可执行文件的默认输出路径，这里设置为项目目录下的 `bin` 目录  
 
-进入`build` 目录，执行 `cmake ..` 以及 `make`，进入 `bin` 目录运行  
+进入 `build` 目录，执行 `cmake ..` 以及 `make`，进入 `bin` 目录运行  
 结果如下：
 
 ![结果](https://upload-images.jianshu.io/upload_images/22192996-4565cb2833e6f974.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
