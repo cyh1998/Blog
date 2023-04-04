@@ -39,7 +39,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_GTK
 ```
 make -j8
 ```
-`-j8`表示使用多个系统内核进行编译，从而提高编译速度，不清楚自己系统内核数的，可以使用 `make -j$(nproc)`  
+`-j8` 表示使用多个系统内核进行编译，从而提高编译速度，不清楚自己系统内核数的，可以使用 `make -j$(nproc)`  
 如果编译时报错，可以尝试不使用多个内核编译，虽然需要更长的编译时间，但是可以避免一些奇怪的报错  
 **7. 安装**  
 ```
