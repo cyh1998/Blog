@@ -17,7 +17,7 @@ imshow("Display window",srcImage);
 imwrite("New_opencv.jpg", srcImage);
 ```
 4.图像的拷贝  
-**注：** 单纯的使用`=`来赋值Mat对象，属于浅拷贝，其本质是指针之间的赋值！！！
+**注：** 单纯的使用 `=` 来赋值Mat对象，属于浅拷贝，其本质是指针之间的赋值！！！
 ```
 Mat Image_1 = imread("opencv.jpg");
 Mat Image_2;
@@ -70,6 +70,7 @@ dilate(src, dst, element);
 ## 五、图像二值化
 二值化，即将图像上的像素点的灰度值设置为0或255，可以理解为黑白图。常用的方法为：简单阈值 `threshold()` 和自适应阈值 `adaptiveThreshold()`  
 注：图像二值化之前，首先需要将图像转化为灰度图。  
+
 **简单阈值 `threshold()`**：
 ```
 threshold(Mat src, Mat dst, int thresh, int maxVal, thresholdType);
