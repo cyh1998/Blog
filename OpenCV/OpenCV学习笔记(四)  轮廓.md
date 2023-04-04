@@ -11,8 +11,7 @@ void findContours(InputArray image, OutputArrayOfArrays contours,
 参数说明：  
 `image` ：图像源，8位单通道图像。  
 `contours` ：检测到的轮廓，类型为 `vector<vector<Point>>`，每个轮廓被存储为一组由Point点构成的集合。数组中保存多组点集，即多个轮廓。  
-`hierarchy` ：图像轮廓的拓扑信息，类型为 `vector<Vec4i>`，与
-轮廓的个数一致。数组内每一个元素的4个变量hierarchy[i][0] ~hierarchy[i][3]，分别表示第i个轮廓的**后一个轮廓**、**前一个轮廓**、**子轮廓**、**父轮廓**的索引编号。如果没有对应的轮廓，则相应位置的值为-1。  
+`hierarchy` ：图像轮廓的拓扑信息，类型为 `vector<Vec4i>`，与轮廓的个数一致。数组内每一个元素的4个变量hierarchy[i][0] ~hierarchy[i][3]，分别表示第i个轮廓的**后一个轮廓**、**前一个轮廓**、**子轮廓**、**父轮廓**的索引编号。如果没有对应的轮廓，则相应位置的值为-1。  
 `mode` ：轮廓检索模式，取值：  
 - `RETR_EXTERNAL` ：只检测最外侧轮廓。  
 - `RETR_LIST` ：检索所有轮廓，但不建立任何层次结构，彼此相互独立。  
