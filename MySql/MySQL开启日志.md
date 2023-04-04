@@ -11,7 +11,7 @@ set global general_log_file = '/var/log/mysql/mysql.log';
 - `general_log` ： 是否开启log，`on` 开启，`off` 关闭
 - `general_log_file` ：log输出路径
 
-*注：*log输出路径必须保证存在且MySQL有权限写入。
+*注：* log输出路径必须保证存在且MySQL有权限写入。
 
 查看变量的值
 ```
