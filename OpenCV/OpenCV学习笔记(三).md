@@ -1,4 +1,4 @@
-#### 一、透明背景转白色
+## 一、透明背景转白色
 我们经常会处理一些透明背景的png格式图片，可以使用下面的demo实现将透明背景转白色
 ```
 cv::Mat alpha2white_opencv2(cv::Mat& src) {
@@ -20,27 +20,27 @@ cv::Mat src = cv::imread("C:\\Users\\PC\\Desktop\\cv\\test.png"，-1);
 
 ![透明背景转白色](https://upload-images.jianshu.io/upload_images/22192996-eb64afda8017f25b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#### 二、使用grabCut实现图像前景分割
-可以使用`grabCut()`来分割出图像前景，函数原型：
+## 二、使用grabCut实现图像前景分割
+可以使用 `grabCut()` 来分割出图像前景，函数原型：
 ```
 void grabCut( InputArray img, InputOutputArray mask, Rect rect,
                            InputOutputArray bgdModel, InputOutputArray fgdModel,
                            int iterCount, int mode = GC_EVAL );
 ```
 参数说明：  
-`img`：待分割的源图像，必须是8位3通道（CV_8UC3）图像  
-`mask`：输入输出掩码图像，保存处理后的结果，8位单通道掩码。mask元素值只能为以下四种值：  
+`img` ：待分割的源图像，必须是8位3通道（CV_8UC3）图像  
+`mask` ：输入输出掩码图像，保存处理后的结果，8位单通道掩码。mask元素值只能为以下四种值：  
 - GCD_BGD（=0），背景；
 - GCD_FGD（=1），前景；
 - GCD_PR_BGD（=2），可能的背景；
 - GCD_PR_FGD（=3），可能的前景。
 
 如果没有手动标记GCD_BGD或者GCD_FGD，那么结果只会有GCD_PR_BGD或GCD_PR_FGD  
-`rect`：进行分割的图像范围，即只有该矩形范围内的图像部分才会被处理  
-`bgdModel`：背景模型  
-`fgdModel`：前景模型  
-`iterCount`：函数迭代次数  
-`mode`：用于指示grabCut函数进行什么操作，可选的值有：  
+`rect` ：进行分割的图像范围，即只有该矩形范围内的图像部分才会被处理  
+`bgdModel` ：背景模型  
+`fgdModel` ：前景模型  
+`iterCount` ：函数迭代次数  
+`mode` ：用于指示grabCut函数进行什么操作，可选的值有：  
 - GC_INIT_WITH_RECT（=0），用矩形窗初始化GrabCut；
 - GC_INIT_WITH_MASK（=1），用掩码图像初始化GrabCut；
 - GC_EVAL（=2），执行分割。

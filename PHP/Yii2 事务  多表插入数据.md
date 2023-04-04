@@ -1,4 +1,4 @@
-### Yii2 使用事务  对多个表插入数据
+## Yii2 使用事务  对多个表插入数据
 ```
 $trans = Yii::$app->db->beginTransaction();//开启事务
 $model_1 = new table1;

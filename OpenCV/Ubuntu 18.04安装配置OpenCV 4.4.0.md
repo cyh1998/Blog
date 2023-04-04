@@ -1,11 +1,13 @@
-#### 概述
+## 概述
 本文介绍ubuntu下OpenCV的编译安装以及环境配置，ubuntu版本18.04
-#### OpenCV下载
-下载地址[OpenCV官网](https://opencv.org/releases/)，选择最新的4.4.0版本(如果下载速度太慢，复制链接地址，使用迅雷)  
+
+## OpenCV下载
+下载地址 [OpenCV官网](https://opencv.org/releases/)，选择最新的4.4.0版本(如果下载速度太慢，复制链接地址，使用迅雷)  
+
 ![opencv官网](https://upload-images.jianshu.io/upload_images/22192996-e9ecdc9482e98061.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)  
 
 将下载好的压缩文件拷贝到虚拟机中  
-####  编译与安装
+##  编译与安装
 **1. 安装cmake**  
 OpenCV需要使用cmake进行编译  
 ```
@@ -29,22 +31,23 @@ cd build
 ```
 cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_GTK=ON -D OPENCV_GENERATE_PKGCONFIG=YES ..
 ```
-`CMAKE_BUILD_TYPE=RELEASE`：表示编译发布版本  
-`CMAKE_INSTALL_PREFIX`：表示生成动态库的安装路径，可以自定义  
-`WITH_GTK=ON`：这个配置是为了防止GTK配置失败：即安装了`libgtk2.0-dev`依赖，还是报错未安装  
-`OPENCV_GENERATE_PKGCONFIG=YES`：表示自动生成OpenCV的pkgconfig文件，否则需要自己手动生成。  
+`CMAKE_BUILD_TYPE=RELEASE` ：表示编译发布版本  
+`CMAKE_INSTALL_PREFIX` ：表示生成动态库的安装路径，可以自定义  
+`WITH_GTK=ON` ：这个配置是为了防止GTK配置失败：即安装了 `libgtk2.0-dev` 依赖，还是报错未安装  
+`OPENCV_GENERATE_PKGCONFIG=YES` ：表示自动生成OpenCV的pkgconfig文件，否则需要自己手动生成。  
 **6. 编译**  
 ```
 make -j8
 ```
-`-j8`表示使用多个系统内核进行编译，从而提高编译速度，不清楚自己系统内核数的，可以使用`make -j$(nproc)`  
+`-j8`表示使用多个系统内核进行编译，从而提高编译速度，不清楚自己系统内核数的，可以使用 `make -j$(nproc)`  
 如果编译时报错，可以尝试不使用多个内核编译，虽然需要更长的编译时间，但是可以避免一些奇怪的报错  
 **7. 安装**  
 ```
 sudo make install
 ```
 **注：** 如果需要重新cmake，请先将build目录下的文件清空，再重新cmake，以免发生错误
-#### 环境配置
+
+## 环境配置
 **1. 将OpenCV的库添加到系统路径**  
 方法一：配置ld.so.conf文件
 ```
@@ -68,6 +71,7 @@ sudo ldconfig
 ```
 **2. 配置系统bash**  
 因为在cmake时，选择了自动生成OpenCV的pkgconfig文件，在`/usr/local/lib/pkgconfig`路径可以看到文件  
+
 ![opencv4.pc](https://upload-images.jianshu.io/upload_images/22192996-6fda6826fd18e64a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 确保文件存在，执行如下命令
@@ -93,9 +97,10 @@ pkg-config --modversion opencv4
 pkg-config --cflags opencv4
 pkg-config --libs opencv4
 ```
-![结果](https://upload-images.jianshu.io/upload_images/22192996-073398fd20136fbd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)  
-#### 测试
-新建一个`demo.cpp`文件，代码如下
+![结果](https://upload-images.jianshu.io/upload_images/22192996-073398fd20136fbd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## 测试
+新建一个 `demo.cpp` 文件，代码如下
 ```
 #include <iostream>
 #include <opencv2/opencv.hpp>
@@ -111,7 +116,7 @@ int main()
 	return 0;
 }
 ```
-同级目录放一张图片，名为`opencv.jpg`，编译
+同级目录放一张图片，名为 `opencv.jpg`，编译
 ```
 g++ `pkg-config opencv4 --cflags` demo.cpp  -o demo `pkg-config opencv4 --libs`
 ```

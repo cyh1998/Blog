@@ -1,13 +1,13 @@
-#### 简介
+## 简 介
 常见的图像匹配算法有：平均绝对差算法（MAD）、绝对误差和算法（SAD）、误差平方和算法（SSD）、平均误差平方和算法（MSD）、归一化积相关算法（NCC）、序贯相似性检测算法（SSDA）、hadamard变换算法（SATD）  
 本文主要介绍基于误差平方和算法（SSD）的图像匹配
 
-#### SSD算法
+## SSD算法
 误差平方和算法（Sum of Squared Differences，简称SSD算法），也叫差方和算法。即计算子图与模板图的L2距离。公式如下，这里不再赘述。
 
 ![Sum of Squared Differences](https://upload-images.jianshu.io/upload_images/22192996-df66300095cc302b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#### 代码
+## 代 码
 根据公式，很容易写出代码，配合OpenCV可以实现图像模板匹配的功能
 demo如下：
 ```
@@ -56,18 +56,22 @@ if __name__ == '__main__':
     cv2.imshow("search_img", search_img)
     cv2.waitKey(0)
 ```
-#### 结果
+## 结 果
 运行代码，可以看到匹配到的最终效果
 
 ![匹配结果](https://upload-images.jianshu.io/upload_images/22192996-7919bf60f72203ae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#### 引申
+## 引 申
 此外的平均绝对差算法（MAD）、绝对误差和算法（SAD）、平均误差平方和算法（MSD）和SSD算法如出一辙，只是其相似度测量公式不同  
+
 **1.平均绝对差算法（MAD）**  
+
 ![Mean Absolute Differences](https://upload-images.jianshu.io/upload_images/22192996-777dde2b4dcbd63b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 **2.绝对误差和算法（SAD）**  
+
 ![Sum of Absolute Differences](https://upload-images.jianshu.io/upload_images/22192996-b462c4fea0df57d5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 **3.平均误差平方和算法（MSD）**  
+
 ![Mean Square Differences](https://upload-images.jianshu.io/upload_images/22192996-f0f52715f0348404.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
