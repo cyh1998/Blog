@@ -1,9 +1,9 @@
 ## 1. 修改QDockWidget的背景颜色
-通过样式表为 `QDockWidget `添加背景颜色，直接添加 `background-color` 的效果：  
+通过样式表为 `QDockWidget` 添加背景颜色，直接添加 `background-color` 的效果：  
 
 ![效果](https://upload-images.jianshu.io/upload_images/22192996-530d11247211b7da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-可以看到，`QDockWidget`包括其内部的子组件，都被修改了样式，因为我们没有指定`background-color`添加的对象，添加样式对象:
+可以看到，`QDockWidget` 包括其内部的子组件，都被修改了样式，因为我们没有指定 `background-color` 添加的对象，添加样式对象:
 ```
 QDockWidget {
 	background-color: rgb(255, 255, 255);
