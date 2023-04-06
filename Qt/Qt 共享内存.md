@@ -1,5 +1,5 @@
 ## 概 述
-Qt中提供了`QSharedMemory`类来实现共享内存相关的操作，本文介绍Qt中`QSharedMemory`类的常用函数以及具体的实现。    
+Qt中提供了 `QSharedMemory` 类来实现共享内存相关的操作，本文介绍Qt中 `QSharedMemory` 类的常用函数以及具体的实现。    
 头文件 `#include <QSharedMemory>`
 
 ## 常用函数
@@ -24,7 +24,7 @@ m_shareMemory->setKey("SharedMemory_Key");
 //为传递给构造函数的key创建大小为size的共享内存段，成功返回true，反之false
 bool QSharedMemory::create(int size, AccessMode mode = ReadWrite)
 ```
-`size` ：创建共享内存的大小
+`size` ：创建共享内存的大小  
 `mode` ：内存的访问方式，默认为可读可写。`QSharedMemory` 类定义一个枚举类变量 `AccessMode`，指定了两种共享内存的访问方式：
 - `QSharedMemory::ReadOnly`   只读方式访问共享内存
 - `QSharedMemory::ReadWrite`  读写方式访问共享内存
