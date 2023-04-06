@@ -1,6 +1,6 @@
-#### 利用Python中的 `threading` 模块实现多线程； `queue` 模块实现任务队列  
-Python 的 `queue` 模块中提供了同步的、线程安全的队列类，包括FIFO(先入先出)队列Queue，LIFO(后入先出)队列LifoQueue，和优先级队列 PriorityQueue。  
-对于有大量重复的任务，可以将所有任务放到队列中，然后开启多个线程，从任务队列中取任务，直至队列中任务全部完成。  
+### 利用Python中的 `threading` 模块实现多线程； `queue` 模块实现任务队列  
+Python 的 `queue` 模块中提供了同步的、线程安全的队列类，包括FIFO(先入先出)队列Queue，LIFO(后入先出)队列LifoQueue，和优先级队列PriorityQueue。    
+对于有大量重复的任务，可以将所有任务放到队列中，然后开启多个线程，从任务队列中取任务，直至队列中任务全部完成。   
 这里通过继承 `threading.Thread` 定义子类创建多线程，重写 `init` 方法和 `run` 方法，demo如下：  
 ```
 # -*- coding:utf-8 -*-

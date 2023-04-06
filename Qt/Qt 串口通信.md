@@ -1,6 +1,6 @@
-#### 概 述
-Qt中提供了`QSerialPort`类来实现串口相关的操作，本文介绍Qt中如何使用`QSerialPort`类来实现串口通信。
-`.pro`文件中添加
+## 概 述
+Qt中提供了 `QSerialPort` 类来实现串口相关的操作，本文介绍Qt中如何使用 `QSerialPort` 类来实现串口通信。  
+`.pro` 文件中添加
 ```
 QT += serialport
 ```
@@ -10,9 +10,9 @@ QT += serialport
 #include <QSerialPortInfo> //用于获取串口数据
 ```
 
-#### 实 现
+## 实 现
 **一、获取串口信息**  
-使用`QSerialPortInfo::availablePorts()`，获取系统上可用的串口列表。即QSerialPortInfo对象列表：`QList<QSerialPortInfo>`，列表中的每个QSerialPortInfo对象表示一个串行端口，可以查询端口名称、系统位置、描述等信息。
+使用 `QSerialPortInfo::availablePorts()`，获取系统上可用的串口列表。即QSerialPortInfo对象列表：`QList<QSerialPortInfo>`，列表中的每个QSerialPortInfo对象表示一个串行端口，可以查询端口名称、系统位置、描述等信息。
 ```
 //遍历返回的QSerialPortInfo对象列表
 foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
@@ -20,7 +20,8 @@ foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
     ui->serialName->addItem(info.portName()); 
 }
 ```
-** 二、设置串口信息**
+
+**二、设置串口信息**  
 打开串口前，先对串口的相关配置进行设置，例如连接的串口名称、波特率、数据位等等。
 ```
 m_serialPort->setPortName(ui->serialName->currentText()); //设置串口名称，使用界面下拉框中的串口
@@ -30,6 +31,7 @@ m_serialPort->setStopBits(QSerialPort::OneStop); //设置停止位
 m_serialPort->setParity(QSerialPort::NoParity); //设置有无校验位
 m_serialPort->setFlowControl(QSerialPort::NoFlowControl); //设置流控制
 ```
+
 **三、打开串口**  
 ```
 void MainWindow::on_serialOpenBtn_clicked()
@@ -49,6 +51,7 @@ void MainWindow::on_serialOpenBtn_clicked()
     }
 }
 ```
+
 **四、数据交互**  
 ```
 //发送数据
@@ -79,7 +82,7 @@ void MainWindow::onReadyRead()
     //...
 }
 ```
-**注：** 对于复杂的通信协议，为了避免丢包等一系列问题造成的数据丢失，简单的`readAll()`并不能满足要求，Qt提供了以下的函数：
+**注：** 对于复杂的通信协议，为了避免丢包等一系列问题造成的数据丢失，简单的 `readAll()` 并不能满足要求，Qt提供了以下的函数：
 ```
 //返回等待读取的传入字节数。
 bytesAvailable()
@@ -127,6 +130,7 @@ void MainWindow::onReadyRead()
     }
 }
 ```
+
 **五、析构**  
 清理缓冲区并关闭串口
 ```

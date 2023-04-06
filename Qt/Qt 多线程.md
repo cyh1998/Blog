@@ -1,12 +1,12 @@
-#### 概述
+## 概述
 Qt中有多种方式实现多线程，这里主要简单介绍Qt中 `moveToThread` 和 `QtConcurrent::run` 创建线程的方法，以及如何在线程中和Qt界面交互。
 
 Qt中最基础的线程创建方式是使用QThread，即新建一个线程类继承QThread，重写 `run()` 函数并通过 `start()` 函数启动线程。因为Qt官方已经不推荐使用这种方式，所以这里不再阐述。
 
-#### moveToThread
-`moveToThread` 是在QThread的用法基础上扩展出来，其继承于QObject类。即通过继承QObject类并使用 `moveToThread` 移到一个QThread的对象中。
+## moveToThread
+`moveToThread` 是在QThread的用法基础上扩展出来，其继承于QObject类。即通过继承QObject类并使用 `moveToThread` 移到一个QThread的对象中。  
 示例如下：  
-首先，创建一个继承于QObject的类，定义一个槽函数，即在线程中需要执行的函数；定义一个信号，用于线程完成时通知界面。
+首先，创建一个继承于QObject的类，定义一个槽函数，即在线程中需要执行的函数；定义一个信号，用于线程完成时通知界面。  
 ```
 //MyThread.h
 #include <QObject>
@@ -79,7 +79,7 @@ connect(subthread, &QThread::finished, m_myThread, &QObject::deleteLater);
 初始化后，使用 `start_thread()` 函数开启进程。  
 `subthread = new QThread();` 使用QThread创建一个多线程容器  
 `m_myThread= new MyThread();` 新建自己的线程类  
-`m_myThread->moveToThread(subthread);` 将线程类移动到线程容器中  
+`m_myThread->moveToThread(subthread);` 将线程类移动到线程容器中   
 `connect(this, SIGNAL(sig_startThread()), m_myThread, SLOT(slot_StartMyThread()));` 开始线程信号绑定到子线程中需要执行的槽函数  
 `connect(m_myThread, SIGNAL(Threadfinish()), this, SLOT(slot_finishThread()));` 子线程结束信号绑定到主界面的处理线程完成函数  
 `connect(subthread, &QThread::finished, m_myThread, &QObject::deleteLater);` subthread线程结束后，让m_myThread销亡  
@@ -90,9 +90,10 @@ main threadID : QThread(0x1393a0920d)
 kid threadID : QThread(0x139409cd290)
 ```
 
-#### QtConcurrent::run
+## QtConcurrent::run
 QtConcurrent::run是Qt提供了的高级API接口，能够方便快捷的将任务放到子线程中去执行，无需继承任何类，也不需要重写函数，使用非常简单。  
 既可以执行普通函数，也可以执行类成员函数。  
+
 示例如下：  
 本人使用VS编写Qt，首先在项目Qt设置中勾选Concurrent模块  
 

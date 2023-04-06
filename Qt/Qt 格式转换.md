@@ -1,6 +1,6 @@
 记录下Qt中常见数据类型、结构的相互转换
 
-#### 1. QString 与 String 的转换
+## 1. QString 与 String 的转换
 ```
 //QString 转 String
 QString qstr = "hello";
@@ -10,7 +10,8 @@ string str = qstr.toStdString();
 string str = "hello";
 QString qstr = QString::fromStdString(str);
 ```
-#### 2. QString 与 int 的转换
+
+## 2. QString 与 int 的转换
 ```
 //QString 转 int
 QString str = "100";
@@ -20,7 +21,8 @@ int tmp = str.toInt();
 int tmp = 100;
 QString str = QString::number(tmp);
 ```
-#### 3. QString 与 QByteArray 的转换
+
+## 3. QString 与 QByteArray 的转换
 ```
 //QString 转 QByteArray
 QString str = "hello";
@@ -37,7 +39,8 @@ QByteArray byte("hello");
 QString str;
 str.prepend(byte);
 ```
-#### 4. QImage 与 QByteArray 的转换
+
+## 4. QImage 与 QByteArray 的转换
 ```
 //QImage 转 QByteArray
 QImage image;
@@ -56,7 +59,8 @@ QImage image = reader.read();
 //使用QImage的构造函数，有多个重载，具体可以参考Qt文档
 QImage image = QImage((unsigned char*)byte.data(), width, heigth, bytesPerLine, QImage::Format);
 ```
-#### 5. QByteArray 与 自定义结构体 的转换
+
+## 5. QByteArray 与 自定义结构体 的转换
 自定义结构体名字为MY_STRUCT
 ```
 //QByteArray 转 结构体
@@ -67,7 +71,8 @@ MY_STRUCT *p = reinterpret_cast<MY_STRUCT *>(byte.data());
 QByteArray byte;
 byte.append((char*)&p, sizeof(MY_STRUCT));
 ```
-#### 6. QByteArray 与 char * 的转换
+
+## 6. QByteArray 与 char * 的转换
 ```
 //QByteArray 转 char *
 char *ch;
@@ -79,7 +84,8 @@ char *ch;
 QByteArray byte;
 byte = QByteArray(ch);
 ```
-#### 7. QString 与 char * 的转换
+
+## 7. QString 与 char * 的转换
 ```
 //QString 转 char *
 QString str;

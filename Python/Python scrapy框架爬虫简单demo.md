@@ -1,7 +1,8 @@
-#### 环境：
+## 环 境
 Ubuntu 18.04  
 Python 3.6.9
-#### scrapy的安装
+
+## scrapy的安装
 准备工作，需要pip、python-dev
 ```
 sudo apt-get install python3-pip //指定安装python3的pip
@@ -19,8 +20,9 @@ sudo apt-get install libxml2-dev
 sudo apt-get install libxslt1-dev
 sudo apt-get install python-setuptools
 ```
-最后使用命令 `scrapy --version` ，若显示scrapy版本，则安装成功
-#### 创建项目
+最后使用命令 `scrapy --version`，若显示scrapy版本，则安装成功
+
+## 创建项目
 在你需要创建项目的目录执行
 ```
 scrapy startproject xiaomiapp
@@ -41,14 +43,14 @@ xiaomiapp/
         ├── __init__.py
         └── __pycache__
 ```
-`scrapy.cfg`：项目配置文件  
-`items.py`：项目的数据容器文件，用来定义获取的数据  
-`middlewares.py`：项目的中间件文件  
-`pipelines.py`：项目管道文件，用于对items中的数据进行进一步的处理  
-`settings.py`：设置文件，包含了爬虫项目的设置信息  
+`scrapy.cfg` ：项目配置文件  
+`items.py` ：项目的数据容器文件，用来定义获取的数据  
+`middlewares.py` ：项目的中间件文件  
+`pipelines.py` ：项目管道文件，用于对items中的数据进行进一步的处理  
+`settings.py` ：设置文件，包含了爬虫项目的设置信息  
 `spiders` ：存放自定义爬虫文件的目录  
 
-进入`spiders`目录，执行  
+进入 `spiders` 目录，执行  
 ```
 scrapy genspider xiaomiapp app.mi.com/hotCatApp/10
 ```
@@ -73,12 +75,13 @@ class XiaomiappPySpider(scrapy.Spider):
         pass
 ```
 说明：  
-`name`：文件名  
-`allowed_domains`：允许的域名  
-`start_urls`：请求的地址  
-结合网站的实际内容，使用`response.css()`来获取网站内容，除了CSS选择器之外，Scrapy还支持使用re方法以正则表达式提取内容，以及xpath方法以XPATH语法提取内容。`.extract()`可直接获取包含在标签内的文本  
+`name` ：文件名  
+`allowed_domains` ：允许的域名  
+`start_urls` ：请求的地址  
 
-修改`items.py`内容：
+结合网站的实际内容，使用 `response.css()` 来获取网站内容，除了CSS选择器之外，Scrapy还支持使用re方法以正则表达式提取内容，以及xpath方法以XPATH语法提取内容。`.extract()` 可直接获取包含在标签内的文本  
+
+修改 `items.py` 内容：
 ```
 # -*- coding: utf-8 -*-
 
@@ -97,7 +100,8 @@ class XiaomiappItem(scrapy.Item):
     pass
 ```
 item是保存爬取数据的容器，将可将获取的数据放到item中，类似于字典。
-#### 运行
+
+## 运 行
 在项目目录执行
 ```
 scrapy crawl xiaomiapp
@@ -108,14 +112,14 @@ scrapy crawl xiaomiapp
 
 ![爬取结果](https://upload-images.jianshu.io/upload_images/22192996-39625ed2e718a20d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#### 数据保存
+## 数据保存
 将数据保存为csv、xml、json格式，可以直接使用命令：
 ```
 scrapy crawl xiaomiapp -o xiaomiapp.csv
 scrapy crawl xiaomiapp -o xiaomiapp.xml
 scrapy crawl xiaomiapp -o xiaomiapp.json
 ```
-运行后目录中会出现csv、xml、json格式文件，如果中文输出乱码，在`settings.py`中配置
+运行后目录中会出现csv、xml、json格式文件，如果中文输出乱码，在 `settings.py` 中配置
 ```
 FEED_EXPORT_ENCODING = 'utf-8'
 ```

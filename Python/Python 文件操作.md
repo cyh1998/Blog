@@ -1,4 +1,4 @@
-#### 创建
+## 创建
 ```
 import os
 
@@ -6,7 +6,8 @@ import os
 os.mkdir(path)
 os.makedirs(path)  #创建多级目录
 ```
-#### 删除
+
+## 删除
 ```
 import os
 import shutil
@@ -17,7 +18,8 @@ os.removedirs(path) #删除文件夹，但是文件夹必须为空。
 os.rmdir(path) #删除目录，必须是个空目录
 shutil.rmtree(path) #删除非空目录
 ```
-#### 移动
+
+## 移动
 ```
 import shutil
 
@@ -25,7 +27,8 @@ import shutil
 # newpath：文件的新目录(绝对地址)
 shutil.move(oldpath,newpath) #移动文件
 ```
-#### 重命名
+
+## 重命名
 ```
 import os
 
@@ -33,13 +36,15 @@ import os
 # newname：新文件名(绝对地址)
 os.rename(oldname,newname) #重命名文件
 ```
-#### 查看编码格式
+
+## 查看编码格式
 ```
 import chardet
 
 chardet.detect(str) #返回字符串的编码格式信息，str必须为字符串
 ```
-#### =>遇到由于编码问题，无法获取`os.popen()`的返回值的解决办法：
+
+## =>遇到由于编码问题，无法获取 `os.popen()` 的返回值的解决办法：
 ```
 import os
 
