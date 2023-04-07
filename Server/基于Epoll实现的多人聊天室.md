@@ -1,5 +1,5 @@
 ## 概 述
-本文介绍基于Epoll实现的多人聊天室服务端程序，有关Epoll的相关内容，可以参考博客 [Linux epoll ET模式实现](https://www.jianshu.com/p/ca699516c2db)。
+本文介绍基于Epoll实现的多人聊天室服务端程序，有关Epoll的相关内容，可以参考博客 [Linux epoll ET模式实现](./Linux%20epoll%20ET模式实现.md)。
 
 ## 服务端
 服务端利用 `List` 记录所有连接的客户端socket，在收到客户端消息时，广播给所有当前的客户端。  
