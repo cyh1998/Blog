@@ -1,13 +1,13 @@
-#### 概 述
-本文介绍基于Epoll实现的多人聊天室服务端程序，有关Epoll的相关内容，可以参考博客[Linux epoll ET模式实现](https://www.jianshu.com/p/ca699516c2db)。
+## 概 述
+本文介绍基于Epoll实现的多人聊天室服务端程序，有关Epoll的相关内容，可以参考博客 [Linux epoll ET模式实现](https://www.jianshu.com/p/ca699516c2db)。
 
-#### 服务端
-服务端利用`List`记录所有连接的客户端socket，在收到客户端消息时，广播给所有当前的客户端。  
-服务端需要**注意如何处理客户端断开socket连接的逻辑**，当客户端断开连接时，理论上服务端会触发`EPOLLIN`，`EPOLLRDHUP`事件，如果我们在服务端只关心`EPOLLRDHUP`事件，触发该事件后关闭套接字，这个逻辑是不可行的，有些系统未必会触发`EPOLLRDHUP`。所以服务端代码采用关心`EPOLLIN`事件，然后在`read()`时进行处理的方式，分为以下两种情况：  
+## 服务端
+服务端利用 `List` 记录所有连接的客户端socket，在收到客户端消息时，广播给所有当前的客户端。  
+服务端需要**注意如何处理客户端断开socket连接的逻辑**，当客户端断开连接时，理论上服务端会触发 `EPOLLIN`，`EPOLLRDHUP` 事件，如果我们在服务端只关心 `EPOLLRDHUP` 事件，触发该事件后关闭套接字，这个逻辑是不可行的，有些系统未必会触发 `EPOLLRDHUP`。所以服务端代码采用关心 `EPOLLIN` 事件，然后在 `read()` 时进行处理的方式，分为以下两种情况：  
 - read返回0，对方正常调用close关闭连接  
-- read返回-1，需要通过errno来判断，如果不是`EAGAIN`和`EINTR`，那么就是对方异常断开连接  
+- read返回-1，需要通过errno来判断，如果不是 `EAGAIN` 和 `EINTR`，那么就是对方异常断开连接  
 
-(这里参考了[知乎 Nov 23](https://www.zhihu.com/question/289965746/answer/490278794)的回答)
+(这里参考了 [知乎 Nov 23](https://www.zhihu.com/question/289965746/answer/490278794) 的回答)
 
 **Sever.h**
 ```
@@ -180,8 +180,8 @@ int main() {
     return 0;
 }
 ```
-####客户端
-因为客户端对高并发的要求不高，并且select模式跨平台性更好，所以客户端代码用select来实现。有关select的原理，这里就不赘述了，大家可以百度学习。
+## 客户端
+因为客户端对高并发的要求不高，并且select模式跨平台性更好，所以客户端代码用select来实现。有关select的原理，这里就不赘述了，大家可以百度学习。  
 代码是本人之前学习select时写的，这里拿来使用下，代码如下：
 ```
 #include <iostream>
@@ -277,11 +277,12 @@ int main() {
     return 0;
 }
 ```
-#### 运行效果
+## 运行效果
+
 ![聊天室](https://upload-images.jianshu.io/upload_images/22192996-3311b8802d8fc651.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 运行服务端后，启动多个客户端连接服务端。客户端发送数据后，服务端打印接受的数据并将数据广播给当前在线的客户端。
 
 **说明：**  
 本服务端使用Epoll ET模式，简单的实现了多人聊天室。GitHub地址：[ChatRoomServer](https://github.com/cyh1998/ChatRoomServer)  
-代码中没有使用多线程以及使用`EPOLLONESHOT`来避免多个线程同时操作一个socket的问题、对通信数据的处理也相对简单。日后工作之余会对代码进行完善更新。
+代码中没有使用多线程以及使用 `EPOLLONESHOT` 来避免多个线程同时操作一个socket的问题、对通信数据的处理也相对简单。日后工作之余会对代码进行完善更新。

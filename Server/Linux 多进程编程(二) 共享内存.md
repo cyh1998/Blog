@@ -1,42 +1,46 @@
-#### 概 述
+## 概 述
 进程间通信(**IPC**)有多种方式，包括管道、命名管道(使用不多)、信号量、消息队列以及共享内存。本文主要介绍共享内存相关的系统调用以及利用共享内存的**POSIX**方式来实现聊天室服务器程序。
 
-#### 函数接口
-首先，我们需要了解下，在Linux环境下，IPC有System V以及POXIS两种方式来实现。简单来说，System V和POXIS是Linux环境下的两种标准，拥有不同的函数接口。具体两者的区别，有兴趣的可以看看Linux发展历史。
+## 函数接口
+首先，我们需要了解下，在Linux环境下，IPC有System V以及POXIS两种方式来实现。简单来说，System V和POXIS是Linux环境下的两种标准，拥有不同的函数接口。具体两者的区别，有兴趣的可以看看Linux发展历史。  
+
 **一. System V**  
-System V方式的共享内存API定义在`sys/shm.h`头文件中，包括以下4个函数
+System V方式的共享内存API定义在 `sys/shm.h` 头文件中，包括以下4个函数
 ```
 #include <sys/shm.h>
 int shmget(key_t key, size_t size, int shmflg); //获取共享内存
 ```
-`shmget()`用于获取一块新的或已有的共享内存，成功返回共享内存的标识符，失败返回-1  
+`shmget()` 用于获取一块新的或已有的共享内存，成功返回共享内存的标识符，失败返回-1  
 参数说明  
-`key`：用于标识一段全局唯一的共享内存  
-`size`：指定共享内存大小，单位字节  
-`shmflg`：函数标志，可选值`IPC_CREAT`和`IPC_EXEC`  
+`key` ：用于标识一段全局唯一的共享内存  
+`size` ：指定共享内存大小，单位字节  
+`shmflg` ：函数标志，可选值 `IPC_CREAT` 和 `IPC_EXEC`  
+
 ```
 #include <sys/shm.h>
 void shmat(int shm_id, const void* shm_addr, int shmflg); //映射共享内存
 ```
-`shmat()`用于将共享内存于用户进程映射，成功返回映射后的地址，失败返回`(void *)-1`  
+`shmat()` 用于将共享内存于用户进程映射，成功返回映射后的地址，失败返回 `(void *)-1`  
 参数说明：  
-`shmid`：指定共享内存的标识符，即`shmget()`的返回值  
-`shmaddr`：指定共享内存映射到进程的哪块地址空间，若为NULL，则由操作系统选择关联地址  
-`shmflg`：函数标志，可选值`SHM_RDONLY`、`SHM_RND`、`SHM_REMAP`、`SHM_EXEC`  
+`shmid` ：指定共享内存的标识符，即 `shmget()` 的返回值  
+`shmaddr` ：指定共享内存映射到进程的哪块地址空间，若为NULL，则由操作系统选择关联地址  
+`shmflg` ：函数标志，可选值 `SHM_RDONLY`、`SHM_RND`、`SHM_REMAP`、`SHM_EXEC` 
+
 ```
 #include <sys/shm.h>
 int shmdt(const void* shm_addr); //撤销共享内存与进程之间的映射
 ```
-`shmdt()`用于撤销指定共享内存与进程之间的映射，成功返回0，失败返回`(void *)-1`。  
-参数`shmaddr`是`shmat()`成功返回的地址  
+`shmdt()` 用于撤销指定共享内存与进程之间的映射，成功返回0，失败返回 `(void *)-1`。  
+参数 `shmaddr` 是 `shmat()` 成功返回的地址  
+
 ```
 #include <sys/shm.h>
 shmctl(int shm_id, int command, struct shmid_ds* buf); //控制共享内存(删除)
 ```
-`shmctl()`用于控制共享内存，成功的返回值由参数`command`决定，失败返回-1  
+`shmctl()` 用于控制共享内存，成功的返回值由参数 `command` 决定，失败返回-1  
 参数说明：  
-`shmid`：指定共享内存的标识符，即`shmget()`的返回值  
-`command`：指定要执行的命令，`shmctl()`支持的命令如下表  
+`shmid` ：指定共享内存的标识符，即 `shmget()` 的返回值  
+`command` ：指定要执行的命令，`shmctl()` 支持的命令如下表  
 
 ![shmctl支持的命令](https://upload-images.jianshu.io/upload_images/22192996-7fc9c8241b5a9bcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
@@ -46,10 +50,10 @@ shmctl(int shm_id, int command, struct shmid_ds* buf); //控制共享内存(删�
 #include <sys/mman.h>
 int shm_open(const char *name, int oflag, mode_t mode);
 ```
-`shm_open()`用于创建/获取一个共享内存，成功返回文件描述符，失败返回-1  
+`shm_open()` 用于创建/获取一个共享内存，成功返回文件描述符，失败返回-1  
 参数说明：  
-`name`：指定共享内存名字，必须以`/`开头，并且后面不再有`/`，长度不超过`NAME_MAX`(通常为255)  
-`oflag`：指定创建方式，支持以下值  
+`name` ：指定共享内存名字，必须以 `/` 开头，并且后面不再有 `/`，长度不超过 `NAME_MAX` (通常为255)  
+`oflag` ：指定创建方式，支持以下值  
 
 ![创建方式](https://upload-images.jianshu.io/upload_images/22192996-facd996e2799ea99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
@@ -57,15 +61,16 @@ int shm_open(const char *name, int oflag, mode_t mode);
 #include <unistd.h>
 int ftruncate(int fd, off_t length);
 ```
-`ftruncate()`用于修改共享内存(文件)大小，成功返回0，失败返回-1
+`ftruncate()` 用于修改共享内存(文件)大小，成功返回0，失败返回-1
 参数说明：  
-`fd`：文件描述符  
-`length`：修改的大小  
+`fd` ：文件描述符  
+`length` ：修改的大小  
+
 ```
 #include <sys/mman.h>
 int shm_unlink(const char *name);
 ```
-`shm_unlink()`用于删除`name`指定的共享内存，成功返回0，失败返回-1
+`shm_unlink()` 用于删除 `name` 指定的共享内存，成功返回0，失败返回-1
 
 利用mmap将共享内存进行映射和卸载
 ```
@@ -73,12 +78,13 @@ int shm_unlink(const char *name);
 void *mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset);
 int munmap(void *addr, size_t length);
 ```
-**注：** 使用POXIS方式的共享内存时，在编译时需要链接`-lrt`，在Cmake中，写法如下：
+**注：** 使用POXIS方式的共享内存时，在编译时需要链接 `-lrt`，在Cmake中，写法如下：
 ```
 #添加链接库
 target_link_libraries(${PROJECT_NAME} -lrt) //在最后添加 -lrt
 ```
-#### 实 现
+
+## 实 现
 我们将之前实现的聊天室服务器修改为一个多进程服务器，一个子进程处理一个客户端连接。父子进程之间利用管道相互通信，告知相关信息。同时，将所有客户端的缓冲区设计为一块共享内存。示例代码如下：
 ```
 //MultiProcessServer.h
