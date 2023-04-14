@@ -70,6 +70,7 @@ CMake
 - [CMake 编译thread](./CMake/CMake%20编译thread.md)
 - [CMake 中的 PUBLIC，PRIVATE，INTERFACE](./CMake/CMake%20中的%20PUBLIC，PRIVATE，INTERFACE.md)
 - [CMake 变量](./CMake/CMake%20变量.md)
+- [CMake 链接第三方库的方式](./CMake/CMake%20链接第三方库的方式.md)
 
 MySql
 - [Linux C++连接MySQL](./MySql/Linux%20C++连接MySQL.md)
