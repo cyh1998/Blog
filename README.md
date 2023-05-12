@@ -71,7 +71,8 @@ CMake
 - [CMake 中的 PUBLIC，PRIVATE，INTERFACE](./CMake/CMake%20中的%20PUBLIC，PRIVATE，INTERFACE.md)
 - [CMake 变量](./CMake/CMake%20变量.md)
 - [CMake 链接第三方库的方式](./CMake/CMake%20链接第三方库的方式.md)
-
+- [CMake 查找源文件的方式](./CMake/CMake%20查找源文件的方式.md)
+- 
 MySql
 - [Linux C++连接MySQL](./MySql/Linux%20C++连接MySQL.md)
 - [C++ 实现数据库连接池](./MySql/C++%20实现数据库连接池.md)
