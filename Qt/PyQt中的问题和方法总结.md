@@ -122,5 +122,4 @@ def asyn_download(self, number, string):
 有关 `QMetaObject.invokeMethod` 的内容可以参考 [Qt invokeMethod 异步调用](/Qt/Qt%20invokeMethod%20%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8.md)
 
 ****
-源码地址：[MusicDownloader](https://github.com/cyh1998/MusicDownloader)  
-[GitHub Blog](https://github.com/cyh1998/Blog) 同步更新
+源码地址：[MusicDownloader](https://github.com/cyh1998/MusicDownloader/tree/dev-GUI)
