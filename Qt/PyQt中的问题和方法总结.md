@@ -1,8 +1,8 @@
-### 概 述
+## 概 述
 之前写Qt一直都是使用的C++，最近用Python写了一个Qt项目，发现两个还是有很多不同之处的。  
 这里整理下使用PyQt过程中遇到的一些问题和解决方法。
 
-### 重定向输出
+## 重定向输出
 我们可能会需要将 `print()` 的内容输出到控件，比如输出到 `QTextEdit` 上。  
 当我们调用 `print()` 时，实际上是调用了 `sys.stdout.write()`。  
 最简单的方法，我们只需要直接设置 `sys.stdout` 对象，重写 `write()` 即可，实现如下：  
@@ -72,7 +72,7 @@ def output_print(self, text):
     self.PrintTextEdit.ensureCursorVisible() #滚动文本编辑确保光标可见
 ```
 
-### 多线程
+## 多线程
 在之前 [C++/Qt 多线程](/Qt/Qt%20%E5%A4%9A%E7%BA%BF%E7%A8%8B.md) 的文章中提到，C++可以使用 `QtConcurrent::run` 高级API来实现多线程，并且无需继承任何类，也不需要重写函数。  
 然而 `QtConcurrent` 是通过C++模板特性来实现的，显然Python是不支持的，所以我们还是只能使用 `moveToThread` 来实现。  
 原理不再赘述，实现如下：
@@ -110,7 +110,7 @@ class MainWindow(QMainWindow, Ui_MusicDownloader):
 ```
 这里线程内的工作内容建议通过信号去启动，如果使用线程的 `started` 信号来启动工作会无法传参，而使用自定义信号就可以方便传递参数。
 
-### 异步调用
+## 异步调用
 我们知道 `QMetaObject.invokeMethod` 只能调用Qt 元对象系统已知的方法。因此需要使用 `pyqtSlot` 装饰器来将自定义函数修饰为槽函数。例如：
 ```
 @QtCore.pyqtSlot(int, str, result=bool)
