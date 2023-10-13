@@ -74,6 +74,7 @@ CMake
 - [CMake 查找源文件的方式](./CMake/CMake%20查找源文件的方式.md)
 
 MySql
+- [MySQL相关命令](./MySql/MySQL相关命令.md)
 - [Linux C++连接MySQL](./MySql/Linux%20C++连接MySQL.md)
 - [C++ 实现数据库连接池](./MySql/C++%20实现数据库连接池.md)
 - [MySQL开启日志](./MySql/MySQL开启日志.md)
