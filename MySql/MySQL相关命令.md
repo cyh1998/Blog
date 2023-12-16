@@ -39,3 +39,10 @@ show create procedure your_procedure_name;
 ## 函数
 show create function your_function_name;
 ```
+#### 导出数据
+```
+## 导出数据库
+mysqldump -u username -p password db_name > mysql.db
+## 导出数据表
+mysqldump -u username -p password db_name  table_name > mysql.sql
+```
